@@ -73,6 +73,8 @@ class MIASignInScreen extends StatelessWidget {
                       idToken: googleSignInAuthentication.idToken,
                     );
 
+                    print(googleSignInAuthentication.idToken);
+
                     final UserCredential userCredential =
                     await FirebaseAuth.instance.signInWithCredential(credential);
 
