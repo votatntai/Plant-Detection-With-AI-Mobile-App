@@ -1,4 +1,5 @@
 //region imports
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mealime_app/models/MIAMealModel.dart';
@@ -25,12 +26,11 @@ void main() async {
   //region Entry Point
   WidgetsFlutterBinding.ensureInitialized();
   await initialize(aLocaleLanguageList: languageList());
-
   appStore.toggleDarkMode(value: getBoolAsync(isDarkModeOnPref));
 
   defaultRadius = 10;
   defaultToastGravityGlobal = ToastGravity.BOTTOM;
-
+  await Firebase.initializeApp();
   runApp(MyApp());
   //endregion
 }

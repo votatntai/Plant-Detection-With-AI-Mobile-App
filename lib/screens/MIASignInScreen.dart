@@ -3,6 +3,9 @@ import 'package:mealime_app/screens/MIADashboardScreen.dart';
 import 'package:mealime_app/utils/MIAColors.dart';
 import 'package:mealime_app/utils/MIAWidgets.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 
 import '../main.dart';
 
@@ -55,6 +58,33 @@ class MIASignInScreen extends StatelessWidget {
               onTap: () {
                 MIADashboardScreen().launch(context);
               },
+            ),
+            ElevatedButton.icon(
+              onPressed: () async {
+                try {
+                  final GoogleSignInAccount? googleSignInAccount =
+                  await GoogleSignIn().signIn();
+
+                  if (googleSignInAccount != null) {
+                    final GoogleSignInAuthentication googleSignInAuthentication =
+                    await googleSignInAccount.authentication;
+                    final AuthCredential credential = GoogleAuthProvider.credential(
+                      accessToken: googleSignInAuthentication.accessToken,
+                      idToken: googleSignInAuthentication.idToken,
+                    );
+
+                    final UserCredential userCredential =
+                    await FirebaseAuth.instance.signInWithCredential(credential);
+
+                    final User user = userCredential.user!;
+                    print('Đăng nhập thành công với Google: ${user.displayName}');
+                  }
+                } catch (e) {
+                  print('Lỗi đăng nhập với Google: $e');
+                }
+              },
+              icon: Icon(Icons.login),
+              label: Text('Đăng nhập bằng Google'),
             ),
             16.height,
             RichText(

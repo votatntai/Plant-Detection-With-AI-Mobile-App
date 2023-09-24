@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mealime_app/fragments/HDCameraFragment.dart';
 import 'package:mealime_app/fragments/MIAFavFragment.dart';
 import 'package:mealime_app/fragments/MIAGroceryFragment.dart';
 import 'package:mealime_app/fragments/MIAMealPlanFragment.dart';
@@ -28,8 +29,10 @@ class _MIADashboardScreenState extends State<MIADashboardScreen> {
       return MIAGroceryFragment();
     } else if (selectedTab == 2) {
       return MIAFavFragment();
-    } else {
+    } else if (selectedTab == 3) {
       return MIASettingsFragment();
+    } else {
+      return HDCameraFragment();
     }
   }
 

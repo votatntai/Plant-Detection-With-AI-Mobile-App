@@ -55,6 +55,7 @@ List<MIADashboardModel> getFragmentsList() {
   list.add(MIADashboardModel(image: 'images/shopping-basket.png', tab: 'Groceries'));
   list.add(MIADashboardModel(image: 'images/romantic-novel.png', tab: 'Favourites'));
   list.add(MIADashboardModel(image: 'images/setting.png', tab: 'Settings'));
+  list.add(MIADashboardModel(image: 'images/camera.png', tab: 'Camera'));
 
   return list;
 }

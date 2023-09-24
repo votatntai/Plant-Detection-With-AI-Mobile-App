@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "500238452987",
+    "project_id": "almost-expried-food",
+    "storage_bucket": "almost-expried-food.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:500238452987:android:3862281523d50b71a7085e",
+        "android_client_info": {
+          "package_name": "com.prokit.mealime_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "500238452987-s722jchlqm3g148p5glb1te0qot8e43j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArL4j-8zkqp4sgOHl_PeL6_W9xRYYmQcg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "500238452987-s722jchlqm3g148p5glb1te0qot8e43j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
