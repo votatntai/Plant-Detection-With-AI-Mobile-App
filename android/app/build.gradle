@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.prokit.mealime_app"
+        applicationId "com.prokit.plant_detection"
         minSdkVersion 21
         targetSdkVersion 33
         versionCode 2
