@@ -19,6 +19,7 @@ dependencies:
   firebase_auth:
   google_sign_in:
 
+
   # Base
   cupertino_icons: ^1.0.4
   nb_utils: ^5.0.8-beta.2
@@ -55,10 +56,9 @@ dev_dependencies:
 
 
 flutter:
-
   assets:
     - fonts/
-    - images/
+    - images/background.png
   uses-material-design: true
 
 
