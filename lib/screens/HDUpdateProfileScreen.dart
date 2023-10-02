@@ -1,0 +1,174 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:mealime_app/models/HDUserModel.dart';
+import 'package:mealime_app/utils/MIAColors.dart';
+import 'package:http/http.dart' as http;
+import 'package:nb_utils/nb_utils.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/UserProvider.dart';
+
+class HDUpdateProfileScreen extends StatefulWidget {
+  const HDUpdateProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HDUpdateProfileScreen> createState() => _HDUpdateProfileScreenState();
+}
+
+class _HDUpdateProfileScreenState extends State<HDUpdateProfileScreen> {
+  HDUserModel? currenUser;
+
+  void _showUpdateSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Update Success'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Đóng thông báo popup
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final apiUrl = 'https://plantdetectionservice.azurewebsites.net';
+    final userProvider = Provider.of<UserProvider>(context);
+    currenUser = userProvider.currentUser;
+    var firstNameController =
+        TextEditingController(text: currenUser?.firstName ?? '');
+    var lastNameController =
+        TextEditingController(text: currenUser?.lastName ?? '');
+    var collegeController =
+        TextEditingController(text: currenUser?.college ?? '');
+    var phoneController = TextEditingController(text: currenUser?.phone ?? '');
+    var addressController =
+        TextEditingController(text: currenUser?.address ?? '');
+    var dayOfBirthController =
+        TextEditingController(text: currenUser?.dayOfBirth ?? '');
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: TextButton(
+            onPressed: () {
+              finish(context);
+            },
+            child: Text('Cancel',
+                style: primaryTextStyle(color: miaPrimaryColor))),
+        leadingWidth: 80,
+        elevation: 0,
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              70.height,
+              Image.network('${currenUser?.avatarUrl}')
+                  .cornerRadiusWithClipRRect(100)
+                  .onTap(() {}),
+              /*    Icon(Icons.account_circle_outlined, color: miaSecondaryColor, size: 100).onTap(() {
+                  showSettingsBottomSheet(context);
+                }).center(),*/
+              16.height,
+              Text('${currenUser?.email}',
+                  style: boldTextStyle(color: miaSecondaryColor, size: 20)),
+              20.height,
+              TextFormField(
+                controller: firstNameController,
+                decoration: InputDecoration(labelText: 'First Name'),
+              ),
+              20.height,
+              TextFormField(
+                controller: lastNameController,
+                decoration: InputDecoration(labelText: 'Last Name'),
+              ),
+              20.height,
+              TextFormField(
+                controller: collegeController,
+                decoration: InputDecoration(labelText: 'College'),
+              ),
+              20.height,
+              TextFormField(
+                controller: phoneController,
+                decoration: InputDecoration(labelText: 'Phone'),
+              ),
+              20.height,
+              TextFormField(
+                controller: addressController,
+                decoration: InputDecoration(labelText: 'Address'),
+              ),
+              20.height,
+              TextFormField(
+                controller: dayOfBirthController,
+                decoration: InputDecoration(labelText: 'Day Of Birth'),
+              ),
+              20.height,
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    Map<String, String> bearerHeaders = {
+                      'Content-Type': 'application/json-patch+json',
+                    };
+                    final Map<String, dynamic> data = {
+                      "firstName": "${firstNameController.text}",
+                      "lastName": "${lastNameController.text}",
+                      "avatarUrl": "${currenUser?.avatarUrl}",
+                      "college": "${collegeController.text}",
+                      "phone": "${phoneController.text}",
+                      "address": "${addressController.text}",
+                      "dayOfBirth": "${dayOfBirthController.text}"
+                    };
+                    final response = await http.put(
+                      Uri.parse(apiUrl + '/api/students/${currenUser?.id}'),
+                      headers: bearerHeaders,
+                      body: jsonEncode(data),
+                    );
+                    print(response.statusCode);
+                    if (response.statusCode == 200) {
+                      _showUpdateSuccessDialog(context);
+                      final Map<String, dynamic> responseData =
+                          json.decode(response.body);
+
+                      setState(() {
+                        currenUser = HDUserModel(
+                          id: responseData['id'] ?? '',
+                          firstName: responseData['firstName'] ?? '',
+                          lastName: responseData['lastName'] ?? '',
+                          email: responseData['email'] ?? '',
+                          avatarUrl: responseData['avatarUrl'] ?? '',
+                          college: responseData['college'] ?? '',
+                          phone: responseData['phone'] ?? '',
+                          address: responseData['address'] ?? '',
+                          dayOfBirth: responseData['dayOfBirth'] ?? '',
+                          status: responseData['status'] ?? 'inActive',
+                        );
+                        userProvider.setCurrentUser(currenUser!);
+                      });
+                    }
+                  } catch (e) {}
+                },
+                child: Text(
+                  'Update',
+                  style: TextStyle(
+                    color: Colors.white, // Đặt màu cho văn bản
+                    fontSize: 30, // Đặt kích thước của văn bản (tuỳ chọn)
+                    fontWeight:
+                        FontWeight.bold, // Đặt độ đậm của văn bản (tuỳ chọn)
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'dart:io';
 
+import 'package:nb_utils/nb_utils.dart';
+
+import '../utils/MIAColors.dart';
+
 class CameraScreen extends StatefulWidget {
   final CameraController controller;
 
@@ -21,7 +25,13 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Màn hình Camera'),
+        leading: TextButton(
+            onPressed: () {
+              finish(context);
+            },
+            child: Text('Cancel', style: primaryTextStyle(color: miaPrimaryColor))),
+        leadingWidth: 80,
+        elevation: 0,
       ),
       body: Center(
         child: Column(

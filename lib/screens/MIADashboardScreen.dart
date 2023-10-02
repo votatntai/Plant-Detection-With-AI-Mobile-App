@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mealime_app/fragments/HDCameraFragment.dart';
 import 'package:mealime_app/fragments/MIAFavFragment.dart';
@@ -11,7 +12,9 @@ import 'package:mealime_app/utils/MIADataGenerator.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class MIADashboardScreen extends StatefulWidget {
+
   const MIADashboardScreen({Key? key}) : super(key: key);
+
 
   @override
   _MIADashboardScreenState createState() => _MIADashboardScreenState();

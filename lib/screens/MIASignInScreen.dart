@@ -1,18 +1,27 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:mealime_app/models/HDUserModel.dart';
 import 'package:mealime_app/screens/MIADashboardScreen.dart';
 import 'package:mealime_app/utils/MIAColors.dart';
 import 'package:mealime_app/utils/MIAWidgets.dart';
+import 'package:http/http.dart' as http;
 import 'package:nb_utils/nb_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../main.dart';
+import '../providers/UserProvider.dart';
 
 class MIASignInScreen extends StatelessWidget {
   const MIASignInScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final apiUrl = 'https://plantdetectionservice.azurewebsites.net';
+    var currentUser;
+
     return Scaffold(
       appBar: miaAppBar(context),
       body: Stack(
@@ -49,16 +58,68 @@ class MIASignInScreen extends StatelessWidget {
                         accessToken: googleSignInAuthentication.accessToken,
                         idToken: googleSignInAuthentication.idToken,
                       );
-
-                      print(googleSignInAuthentication.idToken);
-
                       final UserCredential userCredential = await FirebaseAuth
                           .instance
                           .signInWithCredential(credential);
 
                       final User user = userCredential.user!;
-                      print(
-                          'Đăng nhập thành công với Google: ${user.displayName}');
+                      final String? idToken = await user.getIdToken();
+                      if (user != null) {
+                        try {
+                          Map<String, String> headers = {
+                            'Content-Type': 'application/json-patch+json',
+                          };
+
+                          Map<String, dynamic> data = {'idToken': idToken};
+
+                          var jsonBody = jsonEncode(data);
+
+                          final response = await http.post(
+                              Uri.parse(apiUrl + '/api/auth/google/student'),
+                              headers: headers,
+                              body: jsonBody);
+                          if (response.statusCode == 200) {
+                            // Xử lý dữ liệu JSON trả về từ API
+                            final Map<String, dynamic> data =
+                                json.decode(response.body);
+                            var accessToken = data['accessToken'];
+                            final userProvider = Provider.of<UserProvider>(
+                                context,
+                                listen: false);
+                            try {
+                              Map<String, String> bearerHeaders = {
+                                'Content-Type': 'application/json-patch+json',
+                                'Authorization': 'Bearer $accessToken',
+                              };
+
+                              final response = await http.get(
+                                Uri.parse(apiUrl + '/api/students/information'),
+                                headers: bearerHeaders,
+                              );
+                              final Map<String, dynamic> data =
+                                  json.decode(response.body);
+                              print(data);
+                               currentUser = HDUserModel(
+                                  id: data['id'] ?? '',
+                                  firstName: data['firstName'] ?? '',
+                                  lastName: data['lastName'] ?? '',
+                                  email: data['email'] ?? '',
+                                  avatarUrl: data['avatarUrl'] ?? '',
+                                  college: data['college'] ?? '',
+                                  phone: data['phone'] ?? '',
+                                  address: data['address'] ?? '',
+                                  dayOfBirth: data['dayOfBirth'] ?? '',
+                                  status: data['status'] ?? 'inActive');
+                              userProvider.setCurrentUser(currentUser);
+                            } catch (e) {}
+
+                            MIADashboardScreen().launch(context);
+                            _showLoginSuccessDialog(context, currentUser);
+                          }
+                        } catch (e) {
+                          print('Error: $e');
+                        }
+                      }
                     }
                   } catch (e) {
                     print('Lỗi đăng nhập với Google: $e');
@@ -69,11 +130,15 @@ class MIASignInScreen extends StatelessWidget {
                   width: 36,
                   height: 36,
                 ),
-                label: Text('Sign in with Google', style: TextStyle(
-                  color: Colors.white, // Đặt màu cho văn bản
-                  fontSize: 20, // Đặt kích thước của văn bản (tuỳ chọn)
-                  fontWeight: FontWeight.bold, // Đặt độ đậm của văn bản (tuỳ chọn)
-                ),),
+                label: Text(
+                  'Sign in with Google',
+                  style: TextStyle(
+                    color: Colors.white, // Đặt màu cho văn bản
+                    fontSize: 20, // Đặt kích thước của văn bản (tuỳ chọn)
+                    fontWeight:
+                        FontWeight.bold, // Đặt độ đậm của văn bản (tuỳ chọn)
+                  ),
+                ),
               ),
             ),
           ),
@@ -147,6 +212,25 @@ class MIASignInScreen extends StatelessWidget {
         //   ],
         // ).paddingSymmetric(horizontal: 16),
       ),
+    );
+  }
+
+  void _showLoginSuccessDialog(BuildContext context, HDUserModel currentUser) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Welcome ${currentUser?.firstName} ${currentUser?.lastName}'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Đóng thông báo popup
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

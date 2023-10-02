@@ -212,7 +212,7 @@ List<MIADashboardModel> getSettingsList() {
   list.add(MIADashboardModel(image: 'images/book.png', tab: 'Your recipes'));
   list.add(MIADashboardModel(image: 'images/gift.png', tab: 'Share Mealime'));
   list.add(MIADashboardModel(image: 'images/chef.png', tab: 'Meet Our Chefs'));
-  list.add(MIADashboardModel(image: 'images/bulb.png', tab: 'Help Make Mealime Better'));
+  list.add(MIADashboardModel(image: 'images/logout.png', tab: 'Log Out'));
 
   return list;
 }

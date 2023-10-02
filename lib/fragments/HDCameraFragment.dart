@@ -2,6 +2,7 @@
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../screens/HDTakePhotoScreen.dart';
@@ -51,7 +52,6 @@ class _HDCameraFragmentState extends State<HDCameraFragment> {
       }
     }
     return Scaffold(
-      appBar: miaAppBar(context),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
       ),
