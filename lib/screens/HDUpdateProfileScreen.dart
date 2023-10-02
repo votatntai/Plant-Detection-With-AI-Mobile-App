@@ -44,16 +44,16 @@ class _HDUpdateProfileScreenState extends State<HDUpdateProfileScreen> {
     final userProvider = Provider.of<UserProvider>(context);
     currenUser = userProvider.currentUser;
     var firstNameController =
-        TextEditingController(text: currenUser?.firstName ?? '');
+    TextEditingController(text: currenUser?.firstName ?? '');
     var lastNameController =
-        TextEditingController(text: currenUser?.lastName ?? '');
+    TextEditingController(text: currenUser?.lastName ?? '');
     var collegeController =
-        TextEditingController(text: currenUser?.college ?? '');
+    TextEditingController(text: currenUser?.college ?? '');
     var phoneController = TextEditingController(text: currenUser?.phone ?? '');
     var addressController =
-        TextEditingController(text: currenUser?.address ?? '');
+    TextEditingController(text: currenUser?.address ?? '');
     var dayOfBirthController =
-        TextEditingController(text: currenUser?.dayOfBirth ?? '');
+    TextEditingController(text: currenUser?.dayOfBirth ?? '');
 
     return Scaffold(
       appBar: AppBar(
@@ -70,7 +70,6 @@ class _HDUpdateProfileScreenState extends State<HDUpdateProfileScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              70.height,
               Image.network('${currenUser?.avatarUrl}')
                   .cornerRadiusWithClipRRect(100)
                   .onTap(() {}),
@@ -81,36 +80,94 @@ class _HDUpdateProfileScreenState extends State<HDUpdateProfileScreen> {
               Text('${currenUser?.email}',
                   style: boldTextStyle(color: miaSecondaryColor, size: 20)),
               20.height,
-              TextFormField(
-                controller: firstNameController,
-                decoration: InputDecoration(labelText: 'First Name'),
+              Container(
+                padding: EdgeInsets.only(left: 16.0, right: 16.0), // Điều chỉnh khoảng cách từ bên trái màn hình
+                child: TextFormField(
+                  controller: firstNameController,
+                  decoration: InputDecoration(
+                    labelText: 'First Name',
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                    border: OutlineInputBorder(), //Thêm viền xung quanh TextFormField
+                    contentPadding: EdgeInsets.symmetric(vertical: 16.0), // Điều chỉnh khoảng cách đỉnh và đáy
+                    prefixIcon: Icon(Icons.person), //Thêm biểu tượng trước trường nhập
+                  ),
+                ),
               ),
-              20.height,
-              TextFormField(
-                controller: lastNameController,
-                decoration: InputDecoration(labelText: 'Last Name'),
+              SizedBox(height: 20.0), // Khoảng cách giữa các TextFormField
+              Container(
+                padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                child: TextFormField(
+                  controller: lastNameController,
+                  decoration: InputDecoration(
+                    labelText: 'Last Name',
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(vertical: 16.0),
+                    prefixIcon: Icon(Icons.person),
+                  ),
+                ),
               ),
-              20.height,
-              TextFormField(
-                controller: collegeController,
-                decoration: InputDecoration(labelText: 'College'),
+              SizedBox(height: 20.0),
+              Container(
+                padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                child: TextFormField(
+                  controller: collegeController,
+                  decoration: InputDecoration(
+                    labelText: 'College',
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(vertical: 16.0),
+                    prefixIcon: Icon(Icons.school),
+                  ),
+                ),
               ),
-              20.height,
-              TextFormField(
-                controller: phoneController,
-                decoration: InputDecoration(labelText: 'Phone'),
+              SizedBox(height: 20.0),
+              Container(
+                padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                child: TextFormField(
+                  controller: phoneController,
+                  decoration: InputDecoration(
+                    labelText: 'Phone',
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(vertical: 16.0),
+                    prefixIcon: Icon(Icons.phone),
+                  ),
+                ),
               ),
-              20.height,
-              TextFormField(
-                controller: addressController,
-                decoration: InputDecoration(labelText: 'Address'),
+              SizedBox(height: 20.0),
+              Container(
+                padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                child: TextFormField(
+                  controller: addressController,
+                  decoration: InputDecoration(
+                    labelText: 'Address',
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(vertical: 16.0),
+                    prefixIcon: Icon(Icons.home),
+                  ),
+                ),
               ),
-              20.height,
-              TextFormField(
-                controller: dayOfBirthController,
-                decoration: InputDecoration(labelText: 'Day Of Birth'),
+              SizedBox(height: 20.0),
+              Container(
+                padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                // Điều chỉnh khoảng cách từ bên trái màn hình
+                child: TextFormField(
+                  controller: dayOfBirthController,
+                  decoration: InputDecoration(
+                    labelText: 'Day Of Birth',
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                    border: OutlineInputBorder(),
+                    //Thêm viền xung quanh TextFormField
+                    contentPadding: EdgeInsets.symmetric(vertical: 16.0),
+                    // Điều chỉnh khoảng cách đỉnh và đáy
+                    prefixIcon: Icon(Icons
+                        .calendar_today), //Thêm biểu tượng trước trường nhập
+                  ),
+                ),
               ),
-              20.height,
+              SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () async {
                   try {
@@ -135,7 +192,7 @@ class _HDUpdateProfileScreenState extends State<HDUpdateProfileScreen> {
                     if (response.statusCode == 200) {
                       _showUpdateSuccessDialog(context);
                       final Map<String, dynamic> responseData =
-                          json.decode(response.body);
+                      json.decode(response.body);
 
                       setState(() {
                         currenUser = HDUserModel(
@@ -161,7 +218,7 @@ class _HDUpdateProfileScreenState extends State<HDUpdateProfileScreen> {
                     color: Colors.white, // Đặt màu cho văn bản
                     fontSize: 30, // Đặt kích thước của văn bản (tuỳ chọn)
                     fontWeight:
-                        FontWeight.bold, // Đặt độ đậm của văn bản (tuỳ chọn)
+                    FontWeight.bold, // Đặt độ đậm của văn bản (tuỳ chọn)
                   ),
                 ),
               ),
