@@ -78,7 +78,8 @@ class MIASignInScreen extends StatelessWidget {
                               Uri.parse(apiUrl + '/api/auth/google/student'),
                               headers: headers,
                               body: jsonBody);
-                          if (response.statusCode == 200) {
+                          print(response.statusCode);
+                          if (response.statusCode == 200 || response.statusCode == 201) {
                             // Xử lý dữ liệu JSON trả về từ API
                             final Map<String, dynamic> data =
                                 json.decode(response.body);
@@ -89,8 +90,7 @@ class MIASignInScreen extends StatelessWidget {
                             try {
                               Map<String, String> bearerHeaders = {
                                 'Content-Type': 'application/json-patch+json',
-                                'Authorization': 'Bearer $accessToken',
-                              };
+                                'Authorization': 'Bearer $accessToken',};
 
                               final response = await http.get(
                                 Uri.parse(apiUrl + '/api/students/information'),
