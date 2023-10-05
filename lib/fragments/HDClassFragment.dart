@@ -2,19 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mealime_app/components/MIAFavMealComponent.dart';
 import 'package:mealime_app/main.dart';
 import 'package:mealime_app/models/HDClassModel.dart';
-import 'package:mealime_app/screens/MIASingleMealScreen.dart';
-import 'package:mealime_app/utils/MIADialogs.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:provider/provider.dart';
 
 import '../providers/UserProvider.dart';
 import '../screens/HDClassDetailScreen.dart';
-import '../screens/MIABuildMealScreen.dart';
 import '../utils/MIAColors.dart';
 import '../utils/MIAWidgets.dart';
 
@@ -29,6 +24,7 @@ class _HDClassFragmentState extends State<HDClassFragment> {
   HDClassModel? currentClass;
   TextEditingController enrollCodeController = TextEditingController();
   bool isLoading = false;
+  bool classNotFound = false;
   bool showEnrollInput = false;
   bool hasFetchedData = false;
 
@@ -65,7 +61,6 @@ class _HDClassFragmentState extends State<HDClassFragment> {
   Widget build(BuildContext context) {
     final apiUrl = 'https://plantdetectionservice.azurewebsites.net';
     final userProvider = Provider.of<UserProvider>(context);
-    final currenUser = userProvider.currentUser;
     String? accessToken = userProvider.accessToken;
 
     if (currentClass == null && !hasFetchedData) {
@@ -73,8 +68,8 @@ class _HDClassFragmentState extends State<HDClassFragment> {
       hasFetchedData = true;
     }
 
-    return Observer(
-      builder: (_) => Scaffold(
+    return Observer(builder: (context) {
+      return Scaffold(
         appBar: miaFragmentAppBar(context, 'Class', false),
         body: SingleChildScrollView(
           child:
@@ -101,12 +96,14 @@ class _HDClassFragmentState extends State<HDClassFragment> {
                     true) // Hiển thị mục nhập mã lớp nếu currentClass không null
               Column(
                 children: [
-                  Text('Nhập mã lớp để enroll:'),
+                  Text('Enter class code:'),
                   TextField(
                     controller: enrollCodeController,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      findClassByCode(apiUrl, enrollCodeController.text);
+                    },
                     child: Text('Submit'),
                   ),
                 ],
@@ -130,7 +127,7 @@ class _HDClassFragmentState extends State<HDClassFragment> {
                       backgroundImage:
                           NetworkImage(currentClass!.manager.avatarUrl),
                     ),
-                    title: Text(currentClass!.name),
+                    title: Text('${currentClass!.code}-' + currentClass!.name),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -142,11 +139,22 @@ class _HDClassFragmentState extends State<HDClassFragment> {
                     ),
                   ),
                 ),
-              )
+              ),
+            if (classNotFound && currentClass == null)
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Class not found',
+                        style:
+                            boldTextStyle(color: miaSecondaryColor, size: 20)),
+                  ],
+                ),
+              ),
           ]).paddingSymmetric(horizontal: 16),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Future<void> fetchClasses(String apiUrl, String acceessToken) async {
@@ -157,24 +165,60 @@ class _HDClassFragmentState extends State<HDClassFragment> {
       'Content-Type': 'application/json-patch+json',
       'Authorization': 'Bearer ${acceessToken}',
     };
+    try {
+      final response = await http.get(
+          Uri.parse(apiUrl + '/api/classes/student'),
+          headers: bearerHeaders);
 
-    final response = await http.get(Uri.parse(apiUrl + '/api/classes/student'),
-        headers: bearerHeaders);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final HDClassModel responseClass = HDClassModel.fromJson(jsonResponse);
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonResponse = json.decode(response.body);
-      final HDClassModel responseClass = HDClassModel.fromJson(jsonResponse);
+        setState(() {
+          currentClass = responseClass;
+          isLoading = false;
+          hasFetchedData = true;
+        });
+      } else {
+        setState(() {
+          isLoading = false;
+          hasFetchedData = true;
+        });
+      }
+    } catch (e) {}
+  }
 
-      setState(() {
-        currentClass = responseClass;
-        isLoading = false;
-        hasFetchedData = true;
-      });
-    } else {
-      setState(() {
-        isLoading = false;
-        hasFetchedData = true;
-      });
-    }
+  Future<void> findClassByCode(String apiUrl, String code) async {
+    setState(() {
+      isLoading = true;
+    });
+    Map<String, String> bearerHeaders = {
+      'Content-Type': 'application/json-patch+json',
+    };
+
+    try {
+      final response = await http.get(
+          Uri.parse(apiUrl + '/api/classes/code/${code}'),
+          headers: bearerHeaders);
+
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final HDClassModel responseClass = HDClassModel.fromJson(jsonResponse);
+
+        setState(() {
+          currentClass = responseClass;
+          isLoading = false;
+          classNotFound = false;
+        });
+      } else {
+        setState(() {
+          currentClass = null;
+          isLoading = false;
+          classNotFound = true;
+        });
+      }
+    } catch (e) {}
   }
 }

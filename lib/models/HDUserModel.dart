@@ -24,4 +24,19 @@ class HDUserModel {
     this.dayOfBirth,
     required this.status,
   });
+
+  factory HDUserModel.fromJson(Map<String, dynamic> json) {
+    return HDUserModel(
+      id: json['id'],
+      firstName: json['firstName'],
+      lastName: json['lastName'],
+      email: json['email'],
+      avatarUrl: json['avatarUrl'],
+      college: json['college'],
+      phone: json['phone'],
+      address: json['address'],
+      dayOfBirth: json['dayOfBirth'],
+      status: json['status'],
+    );
+  }
 }

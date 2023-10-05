@@ -3,6 +3,7 @@ import 'HDManagerModel.dart';
 class HDClassModel {
   final String id;
   final String name;
+  final String code;
   final String description;
   final String createAt;
   final int numberOfMember;
@@ -12,6 +13,7 @@ class HDClassModel {
   HDClassModel({
     required this.id,
     required this.name,
+    required this.code,
     required this.description,
     required this.createAt,
     required this.numberOfMember,
@@ -23,6 +25,7 @@ class HDClassModel {
     return HDClassModel(
       id: json['id'],
       name: json['name'],
+      code: json['code'],
       description: json['description'],
       createAt: json['createAt'],
       numberOfMember: json['numberOfMember'],
