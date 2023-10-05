@@ -33,10 +33,12 @@ void main() async {
   defaultRadius = 10;
   defaultToastGravityGlobal = ToastGravity.BOTTOM;
   await Firebase.initializeApp();
-  runApp( ChangeNotifierProvider(
-    create: (context) => UserProvider(),
-    child: MyApp(),
-  ),);
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => UserProvider(),
+      child: MyApp(),
+    ),
+  );
   //endregion
 }
 
@@ -48,7 +50,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: '$appName${!isMobile ? ' ${platformName()}' : ''}',
         home: MIASplashScreen(),
-        theme: !appStore.isDarkModeOn ? AppThemeData.lightTheme : AppThemeData.darkTheme,
+        theme: !appStore.isDarkModeOn
+            ? AppThemeData.lightTheme
+            : AppThemeData.darkTheme,
         navigatorKey: navigatorKey,
         scrollBehavior: SBehavior(),
         supportedLocales: LanguageDataModel.languageLocales(),

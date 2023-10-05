@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mealime_app/fragments/HDCameraFragment.dart';
 import 'package:mealime_app/fragments/MIAFavFragment.dart';
 import 'package:mealime_app/fragments/MIAGroceryFragment.dart';
-import 'package:mealime_app/fragments/MIAMealPlanFragment.dart';
+import 'package:mealime_app/fragments/HDClassFragment.dart';
 import 'package:mealime_app/fragments/MIASettingsFragment.dart';
 import 'package:mealime_app/main.dart';
 import 'package:mealime_app/models/MIADashboardModel.dart';
@@ -27,7 +27,7 @@ class _MIADashboardScreenState extends State<MIADashboardScreen> {
 
   Widget getFragment() {
     if (selectedTab == 0) {
-      return MIAMealPlanFragment();
+      return HDClassFragment();
     } else if (selectedTab == 1) {
       return MIAGroceryFragment();
     } else if (selectedTab == 2) {

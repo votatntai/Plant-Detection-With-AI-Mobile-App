@@ -11,6 +11,7 @@ class HDUserModel {
   final String? dayOfBirth;
   final String status;
 
+
   HDUserModel({
     required this.id,
     required this.firstName,

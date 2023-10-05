@@ -9,6 +9,8 @@ class UserProvider extends ChangeNotifier {
 
   HDUserModel? get currentUser => _currentUser;
 
+  String? _accessToken;
+
   static final UserProvider _instance = UserProvider._internal();
 
   factory UserProvider() {
@@ -16,6 +18,14 @@ class UserProvider extends ChangeNotifier {
   }
 
   UserProvider._internal();
+
+  String? get accessToken => _accessToken;
+
+  // Setter để cập nhật accessToken và thông báo sự thay đổi đến các người nghe
+  set accessToken(String? token) {
+    _accessToken = token;
+    notifyListeners();
+  }
 
   void setCurrentUser(HDUserModel user) {
     _currentUser = user;
