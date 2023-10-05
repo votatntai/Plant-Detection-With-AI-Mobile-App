@@ -6,6 +6,7 @@ import 'package:mealime_app/models/MIAMealModel.dart';
 import 'package:mealime_app/providers/UserProvider.dart';
 import 'package:mealime_app/screens/MIASplashScreen.dart';
 import 'package:mealime_app/store/AppStore.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mealime_app/store/MIAStore.dart';
 import 'package:mealime_app/utils/AppTheme.dart';
 import 'package:mealime_app/utils/MIAConstants.dart';
@@ -49,14 +50,26 @@ class MyApp extends StatelessWidget {
       builder: (_) => MaterialApp(
         debugShowCheckedModeBanner: false,
         title: '$appName${!isMobile ? ' ${platformName()}' : ''}',
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          // Thêm các localization delegates tùy chỉnh nếu cần
+        ],
+        supportedLocales: [
+          const Locale('en', 'US'), // Tiếng Anh (Mỹ)
+          const Locale('vi', 'VN'), // Tiếng Việt (Việt Nam)
+          // Thêm các ngôn ngữ và vùng khác nếu cần
+        ],
+        locale: const Locale('en', 'US'), // Ngôn ngữ mặc định
         home: MIASplashScreen(),
         theme: !appStore.isDarkModeOn
             ? AppThemeData.lightTheme
             : AppThemeData.darkTheme,
         navigatorKey: navigatorKey,
         scrollBehavior: SBehavior(),
-        supportedLocales: LanguageDataModel.languageLocales(),
         localeResolutionCallback: (locale, supportedLocales) => locale,
+
+
       ),
     );
   }
