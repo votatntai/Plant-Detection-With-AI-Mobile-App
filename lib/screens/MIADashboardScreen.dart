@@ -29,10 +29,6 @@ class _MIADashboardScreenState extends State<MIADashboardScreen> {
     if (selectedTab == 0) {
       return HDClassFragment();
     } else if (selectedTab == 1) {
-      return MIAGroceryFragment();
-    } else if (selectedTab == 2) {
-      return MIAFavFragment();
-    } else if (selectedTab == 3) {
       return MIASettingsFragment();
     } else {
       return HDCameraFragment();

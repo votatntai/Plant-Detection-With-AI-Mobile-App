@@ -201,7 +201,6 @@ class _HDClassFragmentState extends State<HDClassFragment> {
           Uri.parse(apiUrl + '/api/classes/code/${code}'),
           headers: bearerHeaders);
 
-      print(response.statusCode);
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);

@@ -22,7 +22,7 @@ class HDClassDetailScreen extends StatefulWidget {
 
 class _HDClassDetailScreenState extends State<HDClassDetailScreen> {
   HDClassModel? classModel;
-  List<HDUserModel> studenList = [];
+  List<HDUserModel> studentList = [];
   bool hasFetchedData = false;
   bool isMember = false;
   final apiUrl = 'https://plantdetectionservice.azurewebsites.net';
@@ -31,6 +31,9 @@ class _HDClassDetailScreenState extends State<HDClassDetailScreen> {
   void initState() {
     super.initState();
     classModel = widget.classModel;
+    if (!hasFetchedData) {
+      fetchMemberOfClass(apiUrl, classModel?.id);
+    }
   }
 
   @override
@@ -49,11 +52,7 @@ class _HDClassDetailScreenState extends State<HDClassDetailScreen> {
     final userProvider = Provider.of<UserProvider>(context);
     final currentUser = userProvider.currentUser;
 
-    if (studenList.isEmpty && !hasFetchedData) {
-      fetchMemberOfClass(apiUrl, classModel?.id);
-    }
-
-    for (HDUserModel User in studenList) {
+    for (HDUserModel User in studentList) {
       if (User.id == currentUser?.id) {
         isMember = true;
         break; // Thoát khỏi vòng lặp khi tìm thấy sinh viên trùng ID
@@ -154,23 +153,35 @@ class _HDClassDetailScreenState extends State<HDClassDetailScreen> {
               ),
             ),
             20.height,
-            Container(
-              padding: EdgeInsets.only(left: 16.0, right: 16.0),
-              // Điều chỉnh khoảng cách từ bên trái màn hình
-              child: TextFormField(
-                readOnly: true,
-                controller: numberOfMemberController,
-                decoration: InputDecoration(
-                  labelText: 'Member',
-                  labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                  border: OutlineInputBorder(),
-                  //Thêm viền xung quanh TextFormField
-                  contentPadding: EdgeInsets.symmetric(vertical: 16.0),
-                  // Điều chỉnh khoảng cách đỉnh và đáy
-                  prefixIcon:
-                      Icon(Icons.person), //Thêm biểu tượng trước trường nhập
+            Row(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                  // Điều chỉnh khoảng cách từ bên trái màn hình
+                  child: TextFormField(
+                    readOnly: true,
+                    controller: numberOfMemberController,
+                    decoration: InputDecoration(
+                      labelText: 'Member',
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                      border: OutlineInputBorder(),
+                      //Thêm viền xung quanh TextFormField
+                      contentPadding: EdgeInsets.symmetric(vertical: 16.0),
+                      // Điều chỉnh khoảng cách đỉnh và đáy
+                      prefixIcon: Icon(
+                          Icons.person), //Thêm biểu tượng trước trường nhập
+                    ),
+                  ),
                 ),
-              ),
+                IconButton(
+                  icon: Icon(Icons.remove_red_eye),
+                  color: Colors.green,// Biểu tượng hình con mắt
+                  onPressed: () {
+                    _showMembersDialog(context, studentList);
+                  },
+                ),
+              ],
             ),
             20.height,
             Container(
@@ -196,7 +207,29 @@ class _HDClassDetailScreenState extends State<HDClassDetailScreen> {
               Column(
                 children: [
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      try {
+                        Map<String, String> bearerHeaders = {
+                          'Content-Type': 'application/json-patch+json',
+                          'Authorization': 'Bearer ${userProvider.accessToken}',
+                        };
+                        final queryParameters = {
+                          'classId': '${classModel?.id}',
+                        };
+                        final response = await http.post(
+                            Uri.parse(apiUrl + '/api/classes/request-to-join')
+                                .replace(queryParameters: {
+                              'classId': classModel?.id,
+                            }),
+                            headers: bearerHeaders);
+                        if (response.statusCode == 200) {
+                          setState(() {
+                            isMember = true;
+                            hasFetchedData = false;
+                            _showRequestSuccessDialog(context);
+                          });
+                        } else {}
+                      } catch (e) {}
                     },
                     child: Text('Enroll Me'),
                   ),
@@ -209,29 +242,91 @@ class _HDClassDetailScreenState extends State<HDClassDetailScreen> {
   }
 
   Future<void> fetchMemberOfClass(String apiUrl, classId) async {
-    Map<String, String> bearerHeaders = {
-      'Content-Type': 'application/json-patch+json',
-    };
-
+    if (!studentList.isEmpty) {
+      studentList = [];
+    }
     try {
+      Map<String, String> bearerHeaders = {
+        'Content-Type': 'application/json-patch+json',
+      };
+
       final response = await http.get(
           Uri.parse(apiUrl + '/api/classes/$classId/students'),
           headers: bearerHeaders);
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonMap = jsonDecode(response.body);
-
         final List<dynamic> dataList = jsonMap['data'];
-
-        final List<HDUserModel> userList = dataList.map((json) => HDUserModel.fromJson(json['student'])).toList();
-
+        List<HDUserModel> userList = [];
+        dataList.forEach((userData) {
+          final studentData = userData['student'];
+          HDUserModel user = HDUserModel.fromJson(studentData);
+          user.classStatus = userData['status'];
+          userList.add(user);
+        });
         setState(() {
-          studenList = userList;
+          studentList = userList;
           hasFetchedData = true;
         });
       } else {
         setState(() {});
       }
     } catch (e) {}
+  }
+
+  void _showMembersDialog(BuildContext context, List<HDUserModel> studentList) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('List of member'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: studentList.map((student) {
+                return ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(student.avatarUrl.toString()),
+                  ),
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(student.firstName+ ' ' + student.lastName),
+                      Text(student.email),
+                    ],
+                  ),
+                  subtitle: Text(student.classStatus ?? ''),
+                );
+              }).toList(),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void _showRequestSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Request to join success. Pending Approval'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Đóng thông báo popup
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
