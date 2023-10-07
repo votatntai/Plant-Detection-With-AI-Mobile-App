@@ -20,22 +20,19 @@ class MIAWelcomeScreen extends StatelessWidget {
           ),
           Column(
             children: [
-              AppButton(
-                color: miaPrimaryColor,
-                text: 'Get Started',
-                textStyle: boldTextStyle(color: white),
-                onTap: () {
-                  WalkThroughModelScreen().launch(context);
-                },
-              ),
               16.height,
-              Row(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text('Already a member?  ', style: secondaryTextStyle(size: 16, color: miaSecondaryTextColor)),
-                  Text('Sign In', style: boldTextStyle(decoration: TextDecoration.underline, color: miaSecondaryColor)).onTap(() {
-                    MIASignInScreen().launch(context);
-                  })
+                  AppButton(
+                    color: miaPrimaryColor,
+                    text: 'Sign In',
+                    textStyle: boldTextStyle(color: white),
+                    onTap: () {
+                      MIASignInScreen().launch(context);
+                    },
+                  ),
                 ],
               )
             ],

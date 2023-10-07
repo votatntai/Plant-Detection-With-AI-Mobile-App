@@ -153,17 +153,14 @@ class _HDClassDetailScreenState extends State<HDClassDetailScreen> {
               ),
             ),
             20.height,
-            Row(
-              children: [
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.8,
                   padding: EdgeInsets.only(left: 16.0, right: 16.0),
                   // Điều chỉnh khoảng cách từ bên trái màn hình
                   child: TextFormField(
                     readOnly: true,
                     controller: numberOfMemberController,
                     decoration: InputDecoration(
-                      labelText: 'Member',
+                      labelText: 'Max Of Members',
                       labelStyle: TextStyle(fontWeight: FontWeight.bold),
                       border: OutlineInputBorder(),
                       //Thêm viền xung quanh TextFormField
@@ -174,15 +171,6 @@ class _HDClassDetailScreenState extends State<HDClassDetailScreen> {
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.remove_red_eye),
-                  color: Colors.green,// Biểu tượng hình con mắt
-                  onPressed: () {
-                    _showMembersDialog(context, studentList);
-                  },
-                ),
-              ],
-            ),
             20.height,
             Container(
               padding: EdgeInsets.only(left: 16.0, right: 16.0),
@@ -235,6 +223,38 @@ class _HDClassDetailScreenState extends State<HDClassDetailScreen> {
                   ),
                 ],
               ),
+              40.height,
+              if(hasFetchedData)
+                Column(
+                  children: [
+                    Text(
+                      'List Of Members', // Đặt tiêu đề ở đây
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18, // Cỡ chữ và các thuộc tính khác của văn bản
+                      ),
+                    ),
+                    SingleChildScrollView(
+                      child: Column(
+                        children: studentList.map((student) {
+                          return ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage: NetworkImage(student.avatarUrl.toString()),
+                            ),
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(student.firstName+ ' ' + student.lastName),
+                                Text(student.email),
+                              ],
+                            ),
+                            subtitle: Text(student.classStatus ?? ''),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                )
           ],
         ),
       ),
@@ -272,44 +292,6 @@ class _HDClassDetailScreenState extends State<HDClassDetailScreen> {
         setState(() {});
       }
     } catch (e) {}
-  }
-
-  void _showMembersDialog(BuildContext context, List<HDUserModel> studentList) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('List of member'),
-          content: SingleChildScrollView(
-            child: Column(
-              children: studentList.map((student) {
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(student.avatarUrl.toString()),
-                  ),
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(student.firstName+ ' ' + student.lastName),
-                      Text(student.email),
-                    ],
-                  ),
-                  subtitle: Text(student.classStatus ?? ''),
-                );
-              }).toList(),
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-          ],
-        );
-      },
-    );
   }
   void _showRequestSuccessDialog(BuildContext context) {
     showDialog(
