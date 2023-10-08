@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(mealime_app LANGUAGES CXX)
+project(Detection LANGUAGES CXX)
 
-set(BINARY_NAME "mealime_app")
+set(BINARY_NAME "Detection")
 
 cmake_policy(SET CMP0063 NEW)
 

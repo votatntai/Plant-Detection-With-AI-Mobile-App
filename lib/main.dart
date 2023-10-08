@@ -2,15 +2,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mealime_app/models/MIAMealModel.dart';
-import 'package:mealime_app/providers/UserProvider.dart';
-import 'package:mealime_app/screens/MIASplashScreen.dart';
-import 'package:mealime_app/store/AppStore.dart';
+import 'package:Detection/models/MIAMealModel.dart';
+import 'package:Detection/providers/UserProvider.dart';
+import 'package:Detection/screens/MIASplashScreen.dart';
+import 'package:Detection/store/AppStore.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:mealime_app/store/MIAStore.dart';
-import 'package:mealime_app/utils/AppTheme.dart';
-import 'package:mealime_app/utils/MIAConstants.dart';
-import 'package:mealime_app/utils/MIADataGenerator.dart';
+import 'package:Detection/store/MIAStore.dart';
+import 'package:Detection/utils/AppTheme.dart';
+import 'package:Detection/utils/MIAConstants.dart';
+import 'package:Detection/utils/MIADataGenerator.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 

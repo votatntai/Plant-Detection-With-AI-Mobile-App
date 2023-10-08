@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mealime_app/main.dart';
-import 'package:mealime_app/screens/MIAStepScreen.dart';
-import 'package:mealime_app/utils/MIAColors.dart';
-import 'package:mealime_app/utils/MIAWidgets.dart';
+import 'package:Detection/main.dart';
+import 'package:Detection/screens/MIAStepScreen.dart';
+import 'package:Detection/utils/MIAColors.dart';
+import 'package:Detection/utils/MIAWidgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class MIACreatAccountScreen extends StatelessWidget {

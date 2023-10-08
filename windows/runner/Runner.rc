@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.prokit" "\0"
-            VALUE "FileDescription", "mealime_app" "\0"
+            VALUE "FileDescription", "Detection" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "mealime_app" "\0"
+            VALUE "InternalName", "Detection" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 com.prokit. All rights reserved." "\0"
-            VALUE "OriginalFilename", "mealime_app.exe" "\0"
-            VALUE "ProductName", "mealime_app" "\0"
+            VALUE "OriginalFilename", "Detection.exe" "\0"
+            VALUE "ProductName", "Detection" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

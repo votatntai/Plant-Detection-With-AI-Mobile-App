@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mealime_app/screens/MIASignInScreen.dart';
-import 'package:mealime_app/screens/MIAWalkThroughScreen.dart';
-import 'package:mealime_app/utils/MIAColors.dart';
+import 'package:Detection/screens/MIASignInScreen.dart';
+import 'package:Detection/screens/MIAWalkThroughScreen.dart';
+import 'package:Detection/utils/MIAColors.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class MIAWelcomeScreen extends StatelessWidget {

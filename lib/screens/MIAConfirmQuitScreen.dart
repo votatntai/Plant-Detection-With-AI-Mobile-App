@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mealime_app/main.dart';
-import 'package:mealime_app/models/MIAIngredientModel.dart';
-import 'package:mealime_app/utils/MIAColors.dart';
-import 'package:mealime_app/utils/MIADataGenerator.dart';
-import 'package:mealime_app/utils/MIADialogs.dart';
+import 'package:Detection/main.dart';
+import 'package:Detection/models/MIAIngredientModel.dart';
+import 'package:Detection/utils/MIAColors.dart';
+import 'package:Detection/utils/MIADataGenerator.dart';
+import 'package:Detection/utils/MIADialogs.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class MIAConfirmQuitScreen extends StatelessWidget {

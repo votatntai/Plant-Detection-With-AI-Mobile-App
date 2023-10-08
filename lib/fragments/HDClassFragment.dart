@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mealime_app/main.dart';
-import 'package:mealime_app/models/HDClassModel.dart';
+import 'package:Detection/main.dart';
+import 'package:Detection/models/HDClassModel.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';

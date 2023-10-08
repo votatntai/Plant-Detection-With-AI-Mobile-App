@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mealime_app/fragments/HDCameraFragment.dart';
-import 'package:mealime_app/fragments/MIAFavFragment.dart';
-import 'package:mealime_app/fragments/MIAGroceryFragment.dart';
-import 'package:mealime_app/fragments/HDClassFragment.dart';
-import 'package:mealime_app/fragments/MIASettingsFragment.dart';
-import 'package:mealime_app/main.dart';
-import 'package:mealime_app/models/MIADashboardModel.dart';
-import 'package:mealime_app/utils/MIAColors.dart';
-import 'package:mealime_app/utils/MIADataGenerator.dart';
+import 'package:Detection/fragments/HDCameraFragment.dart';
+import 'package:Detection/fragments/MIAFavFragment.dart';
+import 'package:Detection/fragments/MIAGroceryFragment.dart';
+import 'package:Detection/fragments/HDClassFragment.dart';
+import 'package:Detection/fragments/MIASettingsFragment.dart';
+import 'package:Detection/main.dart';
+import 'package:Detection/models/MIADashboardModel.dart';
+import 'package:Detection/utils/MIAColors.dart';
+import 'package:Detection/utils/MIADataGenerator.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class MIADashboardScreen extends StatefulWidget {

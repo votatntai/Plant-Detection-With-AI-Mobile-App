@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mealime_app/screens/MIAWelcomeScreen.dart';
+import 'package:Detection/screens/MIAWelcomeScreen.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class MIASplashScreen extends StatefulWidget {
@@ -31,6 +31,6 @@ class _MIASplashScreenState extends State<MIASplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Image.asset('images/mealime_app_logo.png', height: 200).center());
+    return Scaffold(body: Image.asset('images/Detection_logo.png', height: 200).center());
   }
 }

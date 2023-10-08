@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mealime_app/main.dart';
-import 'package:mealime_app/models/MIASelectOptionsModel.dart';
-import 'package:mealime_app/screens/MIASetReminderScreen.dart';
-import 'package:mealime_app/utils/MIAColors.dart';
-import 'package:mealime_app/utils/MIAConstants.dart';
-import 'package:mealime_app/utils/MIADataGenerator.dart';
-import 'package:mealime_app/utils/MIAWidgets.dart';
+import 'package:Detection/main.dart';
+import 'package:Detection/models/MIASelectOptionsModel.dart';
+import 'package:Detection/screens/MIASetReminderScreen.dart';
+import 'package:Detection/utils/MIAColors.dart';
+import 'package:Detection/utils/MIAConstants.dart';
+import 'package:Detection/utils/MIADataGenerator.dart';
+import 'package:Detection/utils/MIAWidgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class MIAServingsScreen extends StatefulWidget {

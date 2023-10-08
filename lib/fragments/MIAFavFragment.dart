@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mealime_app/screens/MIASingleMealScreen.dart';
-import 'package:mealime_app/utils/MIADataGenerator.dart';
+import 'package:Detection/screens/MIASingleMealScreen.dart';
+import 'package:Detection/utils/MIADataGenerator.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../components/MIAFavMealComponent.dart';

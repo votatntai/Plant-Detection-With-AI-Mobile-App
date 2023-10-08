@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mealime_app/main.dart';
-import 'package:mealime_app/screens/MIACreatAccountScreen.dart';
-import 'package:mealime_app/utils/MIAColors.dart';
-import 'package:mealime_app/utils/MIAConstants.dart';
-import 'package:mealime_app/utils/MIADialogs.dart';
-import 'package:mealime_app/utils/MIAWidgets.dart';
+import 'package:Detection/main.dart';
+import 'package:Detection/screens/MIACreatAccountScreen.dart';
+import 'package:Detection/utils/MIAColors.dart';
+import 'package:Detection/utils/MIAConstants.dart';
+import 'package:Detection/utils/MIADialogs.dart';
+import 'package:Detection/utils/MIAWidgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class MIASetReminderScreen extends StatefulWidget {

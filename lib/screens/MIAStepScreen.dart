@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mealime_app/screens/MIADashboardScreen.dart';
-import 'package:mealime_app/utils/MIAColors.dart';
+import 'package:Detection/screens/MIADashboardScreen.dart';
+import 'package:Detection/utils/MIAColors.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class MIAStepScreen extends StatelessWidget {

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.prokit.mealime_app">
+    package="com.prokit.Detection">
    <application
-        android:label="mealime_app"
+        android:label="Detection"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mealime_app/screens/MIAPickDietScreen.dart';
-import 'package:mealime_app/utils/MIAColors.dart';
-import 'package:mealime_app/utils/MIAWidgets.dart';
+import 'package:Detection/screens/MIAPickDietScreen.dart';
+import 'package:Detection/utils/MIAColors.dart';
+import 'package:Detection/utils/MIAWidgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class WalkThroughModelScreen extends StatefulWidget {

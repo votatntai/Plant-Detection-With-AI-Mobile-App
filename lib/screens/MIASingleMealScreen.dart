@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mealime_app/components/MealTabComponents.dart';
-import 'package:mealime_app/main.dart';
-import 'package:mealime_app/models/MIAMealModel.dart';
-import 'package:mealime_app/screens/MIAGuideScreen.dart';
-import 'package:mealime_app/utils/MIABottomSheets.dart';
-import 'package:mealime_app/utils/MIAColors.dart';
-import 'package:mealime_app/utils/MIAWidgets.dart';
+import 'package:Detection/components/MealTabComponents.dart';
+import 'package:Detection/main.dart';
+import 'package:Detection/models/MIAMealModel.dart';
+import 'package:Detection/screens/MIAGuideScreen.dart';
+import 'package:Detection/utils/MIABottomSheets.dart';
+import 'package:Detection/utils/MIAColors.dart';
+import 'package:Detection/utils/MIAWidgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class MIASingleMealScreen extends StatefulWidget {

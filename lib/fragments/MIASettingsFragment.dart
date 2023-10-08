@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mealime_app/utils/MIABottomSheets.dart';
-import 'package:mealime_app/utils/MIAConstants.dart';
+import 'package:Detection/utils/MIABottomSheets.dart';
+import 'package:Detection/utils/MIAConstants.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 

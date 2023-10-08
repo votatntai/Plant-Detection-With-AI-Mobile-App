@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:mealime_app/models/HDUserModel.dart';
-import 'package:mealime_app/screens/MIADashboardScreen.dart';
-import 'package:mealime_app/utils/MIAColors.dart';
-import 'package:mealime_app/utils/MIAWidgets.dart';
+import 'package:Detection/models/HDUserModel.dart';
+import 'package:Detection/screens/MIADashboardScreen.dart';
+import 'package:Detection/utils/MIAColors.dart';
+import 'package:Detection/utils/MIAWidgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:nb_utils/nb_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';

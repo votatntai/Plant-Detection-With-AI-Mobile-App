@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mealime_app/utils/MIAColors.dart';
+import 'package:Detection/utils/MIAColors.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../main.dart';

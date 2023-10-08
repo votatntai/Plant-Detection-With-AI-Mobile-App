@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mealime_app/utils/MIAColors.dart';
+import 'package:Detection/utils/MIAColors.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class AppThemeData {

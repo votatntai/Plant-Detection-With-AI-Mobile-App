@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mealime_app/main.dart';
-import 'package:mealime_app/models/MIASelectOptionsModel.dart';
-import 'package:mealime_app/utils/MIAColors.dart';
-import 'package:mealime_app/utils/MIAConstants.dart';
+import 'package:Detection/main.dart';
+import 'package:Detection/models/MIASelectOptionsModel.dart';
+import 'package:Detection/utils/MIAColors.dart';
+import 'package:Detection/utils/MIAConstants.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class MIAAddCollectionScreen extends StatefulWidget {
