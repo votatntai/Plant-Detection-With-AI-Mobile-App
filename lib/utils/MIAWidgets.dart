@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../screens/MIABuildMealScreen.dart';
+import '../screens/MIAWelcomeScreen.dart';
 import 'MIAColors.dart';
 
 PreferredSizeWidget miaAppBar(BuildContext context) {
@@ -9,13 +10,19 @@ PreferredSizeWidget miaAppBar(BuildContext context) {
     leading: IconButton(
       icon: Icon(Icons.arrow_back_ios, color: miaPrimaryColor),
       onPressed: () {
-        finish(context);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MIAWelcomeScreen()), // Thay thế HomePage() bằng trang chính của bạn
+        );
       },
     ).paddingSymmetric(horizontal: 8),
     title: TextButton(
       child: Text('Back', style: primaryTextStyle(color: miaPrimaryColor)),
       onPressed: () {
-        finish(context);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MIAWelcomeScreen()), // Thay thế HomePage() bằng trang chính của bạn
+        );
       },
     ),
     elevation: 0,

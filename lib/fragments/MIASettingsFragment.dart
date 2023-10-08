@@ -188,7 +188,10 @@ class _MIASettingsFragmentState extends State<MIASettingsFragment> {
                   await FirebaseAuth.instance.signOut();
                   await GoogleSignIn().signOut();
                   userProvider.logout();
-                  MIASignInScreen().launch(context);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => MIASignInScreen()),
+                  );
                   _showLogoutSuccessDialog(context);
                 },
                 child: Row(

@@ -31,6 +31,6 @@ class _MIASplashScreenState extends State<MIASplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Image.asset('images/Detection_logo.png', height: 200).center());
+    return Scaffold(body: Image.asset('images/app_logo.png', height: 200).center());
   }
 }

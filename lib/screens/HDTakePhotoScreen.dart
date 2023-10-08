@@ -12,7 +12,8 @@ class CameraScreen extends StatefulWidget {
   CameraScreen({required this.controller});
 
   @override
-  _CameraScreenState createState() => _CameraScreenState(controller: controller);
+  _CameraScreenState createState() =>
+      _CameraScreenState(controller: controller);
 }
 
 class _CameraScreenState extends State<CameraScreen> {
@@ -25,13 +26,21 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: TextButton(
-            onPressed: () {
-              finish(context);
-            },
-            child: Text('Cancel', style: primaryTextStyle(color: miaPrimaryColor))),
-        leadingWidth: 80,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: miaPrimaryColor),
+          onPressed: () {
+            finish(context);
+          },
+        ).paddingSymmetric(horizontal: 8),
+        title: TextButton(
+          child: Text('Back', style: primaryTextStyle(color: miaPrimaryColor)),
+          onPressed: () {
+            finish(context);
+          },
+        ),
         elevation: 0,
+        titleSpacing: 0,
+        leadingWidth: 30,
       ),
       body: Center(
         child: Column(
@@ -52,28 +61,30 @@ class _CameraScreenState extends State<CameraScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ImageViewScreen(imageFile: capturedImage!),
+                      builder: (context) =>
+                          ImageViewScreen(imageFile: capturedImage!),
                     ),
                   );
                 }
               },
               child: Padding(
                 padding: EdgeInsets.all(32.0), // Padding xung quanh nút
-              child: Container(
-                width: 60.0, // Điều chỉnh kích thước nút
-                height: 60.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.blue, // Điều chỉnh màu sắc nút tùy ý
-                ),
-                child: Center(
-                  child: Icon(
-                    Icons.camera,
-                    color: Colors.white, // Điều chỉnh màu sắc biểu tượng tùy ý
-                    size: 32.0, // Điều chỉnh kích thước biểu tượng tùy ý
+                child: Container(
+                  width: 60.0, // Điều chỉnh kích thước nút
+                  height: 60.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.blue, // Điều chỉnh màu sắc nút tùy ý
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.camera,
+                      color: Colors.white,
+                      // Điều chỉnh màu sắc biểu tượng tùy ý
+                      size: 32.0, // Điều chỉnh kích thước biểu tượng tùy ý
+                    ),
                   ),
                 ),
-              ),
               ),
             ),
           ],
