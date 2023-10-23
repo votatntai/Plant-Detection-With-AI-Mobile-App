@@ -79,6 +79,7 @@ class MIASignInScreen extends StatelessWidget {
                               Uri.parse(apiUrl + '/api/auth/google/student'),
                               headers: headers,
                               body: jsonBody);
+                          print(response.statusCode);
                           if (response.statusCode == 200 || response.statusCode == 201) {
                             // Xử lý dữ liệu JSON trả về từ API
                             final Map<String, dynamic> data =
@@ -253,7 +254,9 @@ class MIASignInScreen extends StatelessWidget {
           child: AlertDialog(
             content: Row(
               children: <Widget>[
-                CircularProgressIndicator(), // Hiển thị vòng loading
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                ), // Hiển thị vòng loading
                 SizedBox(width: 20),
               ],
             ),

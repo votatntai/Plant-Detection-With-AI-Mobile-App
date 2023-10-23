@@ -76,7 +76,9 @@ class _HDClassFragmentState extends State<HDClassFragment> {
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             if (isLoading) // Hiển thị CircularProgressIndicator nếu isLoading là true
               Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                ), //,
               ),
             if (!isLoading && currentClass == null)
               Center(
