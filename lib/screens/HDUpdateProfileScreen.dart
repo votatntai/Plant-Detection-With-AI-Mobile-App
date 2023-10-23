@@ -40,7 +40,7 @@ class _HDUpdateProfileScreenState extends State<HDUpdateProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final apiUrl = 'https://plantdetectionservice.azurewebsites.net';
+    final apiUrl = 'https://f8fe-171-232-7-224.ngrok-free.app';
     final userProvider = Provider.of<UserProvider>(context);
     currenUser = userProvider.currentUser;
     var firstNameController =
@@ -212,6 +212,13 @@ class _HDUpdateProfileScreenState extends State<HDUpdateProfileScreen> {
                     }
                   } catch (e) {}
                 },
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24.0), // Điều chỉnh giá trị theo ý muốn
+                    ),
+                  ),
+                ),
                 child: Text(
                   'Update',
                   style: TextStyle(

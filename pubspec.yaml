@@ -18,6 +18,7 @@ dependencies:
   firebase_core:
   firebase_auth:
   google_sign_in:
+  image_picker: ^0.8.4
   provider:
 
 

@@ -25,7 +25,7 @@ class _HDClassDetailScreenState extends State<HDClassDetailScreen> {
   List<HDUserModel> studentList = [];
   bool hasFetchedData = false;
   bool isMember = false;
-  final apiUrl = 'https://plantdetectionservice.azurewebsites.net';
+  final apiUrl = 'https://f8fe-171-232-7-224.ngrok-free.app';
 
   @override
   void initState() {

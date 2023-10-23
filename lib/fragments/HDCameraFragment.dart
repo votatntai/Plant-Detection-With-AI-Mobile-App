@@ -44,7 +44,7 @@ class _HDCameraFragmentState extends State<HDCameraFragment> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CameraScreen(controller: controller),
+            builder: (context) => HDTakePhotoScreen(controller: controller),
           ),
         );
       } else {

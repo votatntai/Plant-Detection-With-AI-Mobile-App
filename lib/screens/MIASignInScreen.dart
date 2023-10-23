@@ -19,7 +19,7 @@ class MIASignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final apiUrl = 'https://plantdetectionservice.azurewebsites.net';
+    final apiUrl = 'https://f8fe-171-232-7-224.ngrok-free.app';
     var currentUser;
 
     return Scaffold(
@@ -46,6 +46,7 @@ class MIASignInScreen extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: () async {
                   try {
+                    showLoadingDialog(context);
                     final GoogleSignInAccount? googleSignInAccount =
                         await GoogleSignIn().signIn();
 
@@ -82,7 +83,7 @@ class MIASignInScreen extends StatelessWidget {
                             // Xử lý dữ liệu JSON trả về từ API
                             final Map<String, dynamic> data =
                                 json.decode(response.body);
-                            final userProvider = Provider.of<UserProvider>(
+                            final               userProvider = Provider.of<UserProvider>(
                                 context,
                                 listen: false);
                             userProvider.accessToken = data['accessToken'];
@@ -110,20 +111,31 @@ class MIASignInScreen extends StatelessWidget {
                                   dayOfBirth: data['dayOfBirth'] ?? '',
                                   status: data['status'] ?? 'inActive');
                               userProvider.setCurrentUser(currentUser);
-                            } catch (e) {}
-
+                            } catch (e) {
+                              hideLoadingDialog(context);
+                            }
+                            hideLoadingDialog(context);
                             MIADashboardScreen().launch(context);
                             _showLoginSuccessDialog(context, currentUser);
                           }
                         } catch (e) {
+                          hideLoadingDialog(context);
                           print('Error: $e');
                         }
                       }
                     }
                   } catch (e) {
+                    hideLoadingDialog(context);
                     print('Lỗi đăng nhập với Google: $e');
                   }
                 },
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(48.0), // Điều chỉnh giá trị theo ý muốn
+                    ),
+                  ),
+                ),
                 icon: Image.asset(
                   './images/google.png',
                   width: 36,
@@ -232,4 +244,28 @@ class MIASignInScreen extends StatelessWidget {
       },
     );
   }
+  Future<void> showLoadingDialog(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // Không đóng dialog bằng cách tap ra ngoài
+      builder: (BuildContext context) {
+        return Center(
+          child: AlertDialog(
+            content: Row(
+              children: <Widget>[
+                CircularProgressIndicator(), // Hiển thị vòng loading
+                SizedBox(width: 20),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+// Hàm để ẩn AlertDialog loading
+  void hideLoadingDialog(BuildContext context) {
+    Navigator.of(context, rootNavigator: true).pop('dialog');
+  }
+
 }

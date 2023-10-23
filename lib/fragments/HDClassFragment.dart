@@ -59,7 +59,7 @@ class _HDClassFragmentState extends State<HDClassFragment> {
 
   @override
   Widget build(BuildContext context) {
-    final apiUrl = 'https://plantdetectionservice.azurewebsites.net';
+    final apiUrl = 'https://f8fe-171-232-7-224.ngrok-free.app';
     final userProvider = Provider.of<UserProvider>(context);
     String? accessToken = userProvider.accessToken;
 
