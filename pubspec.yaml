@@ -20,7 +20,7 @@ dependencies:
   google_sign_in:
   image_picker: ^0.8.4
   provider:
-
+  carousel_slider: ^4.0.0
 
   # Base
   cupertino_icons: ^1.0.4

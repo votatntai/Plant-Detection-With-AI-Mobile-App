@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/APIUrl.dart';
 import '../providers/UserProvider.dart';
 
 class HDUpdateProfileScreen extends StatefulWidget {
@@ -40,7 +41,7 @@ class _HDUpdateProfileScreenState extends State<HDUpdateProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final apiUrl = 'https://f8fe-171-232-7-224.ngrok-free.app';
+    final apiUrl = APIUrl.getUrl();
     final userProvider = Provider.of<UserProvider>(context);
     currenUser = userProvider.currentUser;
     var firstNameController =

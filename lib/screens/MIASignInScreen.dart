@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../main.dart';
+import '../providers/APIUrl.dart';
 import '../providers/UserProvider.dart';
 
 class MIASignInScreen extends StatelessWidget {
@@ -19,7 +20,7 @@ class MIASignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final apiUrl = 'https://f8fe-171-232-7-224.ngrok-free.app';
+    final apiUrl = APIUrl.getUrl();
     var currentUser;
 
     return Scaffold(
@@ -74,7 +75,6 @@ class MIASignInScreen extends StatelessWidget {
                           Map<String, dynamic> data = {'idToken': idToken};
 
                           var jsonBody = jsonEncode(data);
-
                           final response = await http.post(
                               Uri.parse(apiUrl + '/api/auth/google/student'),
                               headers: headers,

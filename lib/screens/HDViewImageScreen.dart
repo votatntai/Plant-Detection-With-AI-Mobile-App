@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../providers/APIUrl.dart';
 import '../utils/MIAColors.dart';
 import 'HDViewResultScreen.dart';
 
@@ -20,7 +21,7 @@ class HDViewImageScreen extends StatefulWidget {
 class _HDViewImageScreenState extends State<HDViewImageScreen> {
   File? _image;
 
-  final apiUrl = 'https://f8fe-171-232-7-224.ngrok-free.app';
+  final apiUrl = APIUrl.getUrl();
 
   @override
   void initState() {

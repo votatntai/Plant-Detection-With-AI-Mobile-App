@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Detection/providers/APIUrl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:Detection/models/HDUserModel.dart';
@@ -25,7 +26,7 @@ class _HDClassDetailScreenState extends State<HDClassDetailScreen> {
   List<HDUserModel> studentList = [];
   bool hasFetchedData = false;
   bool isMember = false;
-  final apiUrl = 'https://f8fe-171-232-7-224.ngrok-free.app';
+  final apiUrl = APIUrl.getUrl();
 
   @override
   void initState() {
