@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../utils/MIAColors.dart';
+import 'HDPlantDetailScreen.dart';
 
 class HDViewResultScreen extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -22,7 +23,6 @@ class _HDViewResultScreenState extends State<HDViewResultScreen> {
   void initState() {
     super.initState();
     data = widget.data;
-    print(data);
   }
 
   @override
@@ -69,37 +69,40 @@ class _HDViewResultScreenState extends State<HDViewResultScreen> {
             height: 300,
             color: Colors.white,
             child: Image.network(
-              data['plant']['images'][_currentImageIndex]['url'],
+              plant['images'][_currentImageIndex]['url'],
               fit: BoxFit.cover,
             ),
           ),
           SizedBox(height: 20),
           Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: data['plant']['images'].map<Widget>((item) {
-                return GestureDetector(
-                  onTap: () {
-                    _onSliderChanged(data['plant']['images'].indexOf(item));
-                  },
-                  child: Container(
-                    width: 80,
-                    height: 80,
-                    margin: EdgeInsets.symmetric(horizontal: 5.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.blue,
-                        // Màu viền cho hình ảnh xem trước được chọn
-                        width: 2.0,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: plant['images'].map<Widget>((item) {
+                  return GestureDetector(
+                    onTap: () {
+                      _onSliderChanged(plant['images'].indexOf(item));
+                    },
+                    child: Container(
+                      width: 80,
+                      height: 80,
+                      margin: EdgeInsets.symmetric(horizontal: 5.0),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.blue,
+                          // Màu viền cho hình ảnh xem trước được chọn
+                          width: 2.0,
+                        ),
+                      ),
+                      child: Image.network(
+                        item['url'],
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    child: Image.network(
-                      item['url'],
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
-              }).toList(),
+                  );
+                }).toList(),
+              ),
             ),
           ),
           SizedBox(height: 20),
@@ -156,16 +159,108 @@ class _HDViewResultScreenState extends State<HDViewResultScreen> {
           ),
           for (var estimate in estimates)
             Padding(
-              padding: EdgeInsets.only(bottom: 24.0),
-              child: Column(
-                children: [
-                  Text(
-                    '${estimate['plant']['name']}: ${(estimate['confidence'] * 100).toStringAsFixed(2)}%',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
-                  ),
-                  Image.network(estimate['plant']['images'][0]['url']),
-                ],
+              padding: EdgeInsets.only(bottom: 24.0, left: 12, right: 12),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.black12,
+                ),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: 12, left: 8, right: 12, bottom: 12),
+                      child: Container(
+                          width: 100,
+                          height: 100,
+                          margin: EdgeInsets.symmetric(horizontal: 5.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            // Điều chỉnh giá trị theo ý muốn
+                            child: Image.network(
+                              estimate['plant']['images'][0]['url'] ??
+                                  'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png',
+                              fit: BoxFit.cover,
+                            ),
+                          )),
+                    ),
+                    Container(
+                      height: 110,
+                      child: Column(
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Text(
+                              '${estimate['plant']['name']}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18.0),
+                            ),
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: Container(),
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: Container(),
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: Text(
+                              '${(estimate['confidence'] * 100).toStringAsFixed(2)}%',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18.0),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: 190, // Điều chỉnh kích thước theo ý muốn của bạn
+                      height: 110,
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            bottom: 0,
+                            right: 12,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HDPlantDetailScreen(
+                                          id: estimate['plant']['id'])),
+                                );
+                              },
+                              style: ButtonStyle(
+                                minimumSize: MaterialStateProperty.resolveWith(
+                                    (states) => Size(70, 30)),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        24.0), // Điều chỉnh giá trị theo ý muốn
+                                  ),
+                                ),
+                              ),
+                              child: Text(
+                                'View Detail',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  // Đặt màu cho văn bản
+                                  fontSize: 12,
+                                  // Đặt kích thước của văn bản (tuỳ chọn)
+                                  fontWeight: FontWeight
+                                      .bold, // Đặt độ đậm của văn bản (tuỳ chọn)
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
         ],

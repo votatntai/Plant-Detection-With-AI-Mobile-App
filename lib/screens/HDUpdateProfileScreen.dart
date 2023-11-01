@@ -214,6 +214,7 @@ class _HDUpdateProfileScreenState extends State<HDUpdateProfileScreen> {
                   } catch (e) {}
                 },
                 style: ButtonStyle(
+                  minimumSize: MaterialStateProperty.resolveWith((states) => Size(200, 50)),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24.0), // Điều chỉnh giá trị theo ý muốn
@@ -224,7 +225,7 @@ class _HDUpdateProfileScreenState extends State<HDUpdateProfileScreen> {
                   'Update',
                   style: TextStyle(
                     color: Colors.white, // Đặt màu cho văn bản
-                    fontSize: 30, // Đặt kích thước của văn bản (tuỳ chọn)
+                    fontSize: 24, // Đặt kích thước của văn bản (tuỳ chọn)
                     fontWeight:
                     FontWeight.bold, // Đặt độ đậm của văn bản (tuỳ chọn)
                   ),

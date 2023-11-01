@@ -79,7 +79,6 @@ class MIASignInScreen extends StatelessWidget {
                               Uri.parse(apiUrl + '/api/auth/google/student'),
                               headers: headers,
                               body: jsonBody);
-                          print(response.statusCode);
                           if (response.statusCode == 200 || response.statusCode == 201) {
                             // Xử lý dữ liệu JSON trả về từ API
                             final Map<String, dynamic> data =
@@ -99,7 +98,6 @@ class MIASignInScreen extends StatelessWidget {
                               );
                               final Map<String, dynamic> data =
                                   json.decode(response.body);
-                              print(data);
                                currentUser = HDUserModel(
                                   id: data['id'] ?? '',
                                   firstName: data['firstName'] ?? '',

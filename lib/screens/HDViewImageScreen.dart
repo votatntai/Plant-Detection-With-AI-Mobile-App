@@ -72,7 +72,6 @@ class _HDViewImageScreenState extends State<HDViewImageScreen> {
     var response = await request.send();
     if (response.statusCode == 200) {
       hideLoadingDialog(context);
-      print('Ảnh đã được gửi thành công.');
       var responseBody = await response.stream.bytesToString();
       Map<String, dynamic> data = json.decode(responseBody);
       Navigator.push(
