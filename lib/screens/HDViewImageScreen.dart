@@ -59,9 +59,6 @@ class _HDViewImageScreenState extends State<HDViewImageScreen> {
     var request = http.MultipartRequest(
         'POST', Uri.parse(apiUrl + '/api/predictions'));
     var path = _image?.path ?? '';
-    Map<String, String> headers = {
-      'Content-Type': 'multipart/form-data',
-    };
     request.files.add(
       await http.MultipartFile.fromPath(
         'image', // Tên trường tệp ảnh trên API

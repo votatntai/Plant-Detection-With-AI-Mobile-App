@@ -29,14 +29,6 @@ class _HDClassFragmentState extends State<HDClassFragment> {
   bool showEnrollInput = false;
   bool hasFetchedData = false;
 
-  PreferredSizeWidget getAppBar() {
-    if (miaStore.addedMeals.isEmpty) {
-      return AppBar(leading: SizedBox(), elevation: 0);
-    } else {
-      return miaFragmentAppBar(context, 'Your personalized meal plan', true);
-    }
-  }
-
   @override
   void initState() {
     changeStatusColor(appStore.scaffoldBackground!);
@@ -75,6 +67,7 @@ class _HDClassFragmentState extends State<HDClassFragment> {
         body: SingleChildScrollView(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Divider(height: 2, color: Colors.black),
             if (isLoading) // Hiển thị CircularProgressIndicator nếu isLoading là true
               Center(
                 child: CircularProgressIndicator(
@@ -126,18 +119,35 @@ class _HDClassFragmentState extends State<HDClassFragment> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage:
-                          NetworkImage(currentClass!.manager.avatarUrl),
-                    ),
                     title: Text('${currentClass!.code}-' + currentClass!.name),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('${currentClass!.description}'),
+                        Text(
+                          currentClass!.description.length > 35
+                              ? '${currentClass!.description.substring(0, 35)}...'
+                              : '${currentClass!.description}',
+                        ),
                         Text(
                             'Number of students: ${currentClass!.numberOfMember.toString()}'),
-                        Text('Manager: ${currentClass!.manager.email}'),
+                        Row(
+                          children: [
+                            Text('Manager: '),
+                            Container(
+                              height: 20,
+                              width: 20,
+                              child: CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    currentClass!.manager.avatarUrl),
+                              ),
+                            ),
+                            Text(
+                              currentClass!.manager.email.length > 25
+                                  ? '${currentClass!.manager.email.substring(0, 25)}...'
+                                  : '${currentClass!.manager.email}',
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -203,7 +213,6 @@ class _HDClassFragmentState extends State<HDClassFragment> {
       final response = await http.get(
           Uri.parse(apiUrl + '/api/classes/code/${code}'),
           headers: bearerHeaders);
-
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);

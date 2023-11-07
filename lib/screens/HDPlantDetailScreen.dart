@@ -82,13 +82,14 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
             Navigator.pop(context);
           },
         ).paddingSymmetric(horizontal: 8),
-        title: Center(
+        title: Padding(
+          padding: EdgeInsets.only(left: 68),
           child: Text(
             'Plant Detail',
             style: TextStyle(
               color: Colors.black, // Màu chữ
               fontWeight: FontWeight.bold,
-              fontSize: 16.0, // Kích thước chữ
+              fontSize: 24.0, // Kích thước chữ
             ),
           ),
         ),
@@ -98,72 +99,102 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 300,
-              color: Colors.white,
-              child: Image.network(
-                plant['images'][_currentImageIndex]['url'],
-                fit: BoxFit.cover,
+            Padding(
+              padding: EdgeInsets.only(top: 12, left: 12, right: 12),
+              // Chỉ định padding bên trái
+              child: Container(
+                height: 300,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.black12,
+                    // Màu viền cho hình ảnh xem trước được chọn
+                    width: 2.0,
+                  ),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  // Điều chỉnh giá trị theo ý muốn
+                  child: Image.network(
+                    plant['images'][_currentImageIndex]['url'],
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
             SizedBox(height: 20),
             Center(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: plant['images'].map<Widget>((item) {
-                    return GestureDetector(
-                      onTap: () {
-                        _onSliderChanged(plant['images'].indexOf(item));
-                      },
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        margin: EdgeInsets.symmetric(horizontal: 5.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.blue,
-                            // Màu viền cho hình ảnh xem trước được chọn
-                            width: 2.0,
+              child: Padding(
+                padding: EdgeInsets.only(left: 6, right: 6),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: plant['images'].map<Widget>((item) {
+                      return GestureDetector(
+                        onTap: () {
+                          _onSliderChanged(plant['images'].indexOf(item));
+                        },
+                        child: Container(
+                          width: 80,
+                          height: 80,
+                          margin: EdgeInsets.symmetric(horizontal: 5.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Colors.black12,
+                              // Màu viền cho hình ảnh xem trước được chọn
+                              width: 2.0,
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            // Điều chỉnh giá trị theo ý muốn
+                            child: Image.network(
+                              item['url'],
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                        child: Image.network(
-                          item['url'],
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    );
-                  }).toList(),
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
             ),
             SizedBox(height: 20),
             Padding(
-              padding: EdgeInsets.only(left: 10.0), // Chỉ định padding bên trái
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start, // Căn lề bên trái
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${plant['name']}',
-                    style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),
-                  ),
-                  Text(
-                    '${plant['plantCategories'][0]['category']['name'] ?? 'abc'}',
-                    style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
-                  ),
-                  Text(
-                    '${plant['description'] ?? 'Description'}',
-                    style: TextStyle(
-                      color: Colors.black.withOpacity(0.5), // Độ mờ màu chữ
-                      fontSize: 16, // Kích thước chữ
-                      fontWeight: FontWeight.normal, // Trọng lượng chữ
+              padding: EdgeInsets.only(left: 12.0, right: 12),
+              // Chỉ định padding bên trái
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  // Căn lề bên trái
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${plant['name']}' ?? 'Name',
+                      style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),
                     ),
-                  ),
-                ],
+                    Text(
+                      '${plant['plantCategories'][0]['category']['name']}' ?? 'Categories',
+                      style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
+                    ),
+                    Text(
+                      '${plant['description']}' ?? 'Description',
+                      style: TextStyle(
+                        color: Colors.black.withOpacity(0.5),
+                        // Độ mờ màu chữ
+                        fontSize: 16,
+                        // Kích thước chữ
+                        fontWeight: FontWeight.normal, // Trọng lượng chữ
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
