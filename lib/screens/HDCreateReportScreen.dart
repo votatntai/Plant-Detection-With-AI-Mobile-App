@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:Detection/providers/APIUrl.dart';
+import 'package:Detection/screens/HDManageReportScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -150,6 +151,7 @@ class _HDCreateReportScreenState extends State<HDCreateReportScreen> {
                     if (_formKey.currentState!.validate()) {
                       if (capturedImage != null) {
                         try {
+                          showLoadingDialog(context);
                           var request = http.MultipartRequest(
                               'POST', Uri.parse(apiUrl + '/api/reports'));
                           var path = capturedImage?.path ?? '';
@@ -170,13 +172,18 @@ class _HDCreateReportScreenState extends State<HDCreateReportScreen> {
                             var streamedResponse = await request.send();
                             var response = await http.Response.fromStream(
                                 streamedResponse);
-                            if (response.statusCode == 200 || response.statusCode == 201) {
+                            if (response.statusCode == 200 ||
+                                response.statusCode == 201) {
+                              hideLoadingDialog(context);
+                              Navigator.pop(context, true);
                               _showCreateSuccessDialog(context);
                             } else {
+                              hideLoadingDialog(context);
                               print(
                                   'Failed to send report. Status code: ${response.statusCode}');
                             }
                           } catch (e) {
+                            hideLoadingDialog(context);
                             print('Error: $e');
                           }
                         } catch (e) {}
@@ -210,6 +217,7 @@ class _HDCreateReportScreenState extends State<HDCreateReportScreen> {
       ),
     );
   }
+
   void _showCreateSuccessDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -229,4 +237,28 @@ class _HDCreateReportScreenState extends State<HDCreateReportScreen> {
     );
   }
 
+  Future<void> showLoadingDialog(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // Không đóng dialog bằng cách tap ra ngoài
+      builder: (BuildContext context) {
+        return Center(
+          child: AlertDialog(
+            content: Row(
+              children: <Widget>[
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                ), // Hiển thị vòng loading
+                SizedBox(width: 20),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void hideLoadingDialog(BuildContext context) {
+    Navigator.of(context, rootNavigator: true).pop('dialog');
+  }
 }

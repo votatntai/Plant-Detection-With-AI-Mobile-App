@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:Detection/screens/HDCreateReportScreen.dart';
+import 'package:Detection/screens/HDReportDetailScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:Detection/main.dart';
@@ -24,6 +25,7 @@ class HDManageReportScreen extends StatefulWidget {
 
 class _HDManageReportScreenState extends State<HDManageReportScreen> {
   bool isLoading = false;
+  bool isLoadingMoreData = false;
   bool hasFetchedData = false;
   bool _atBottom = false;
   ScrollController _scrollController = ScrollController();
@@ -33,19 +35,12 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
 
   List<Map<String, dynamic>> data = [];
 
+  DateTime? lastFetchTime;
+
   @override
   void initState() {
     changeStatusColor(appStore.scaffoldBackground!);
     super.initState();
-  }
-
-  void handleContainerTap(HDClassModel classModel) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => HDClassDetailScreen(classModel: classModel),
-      ),
-    );
   }
 
   @override
@@ -61,12 +56,16 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
       });
     }
 
-    void _onScroll() {
-      if (pageNum < totalRow / 10 - 1) {
-        setState(() {
-          pageNum = pageNum + 1;
-        });
-        fetchMoreReports(apiUrl, accessToken!, pageNum);
+    void _onScroll() async {
+      if ((pageNum < totalRow / 10 - 1) && isLoadingMoreData && _atBottom) {
+        if (lastFetchTime == null ||
+            DateTime.now().difference(lastFetchTime!) > Duration(seconds: 1)) {
+          setState(() {
+            pageNum = pageNum + 1;
+          });
+          lastFetchTime = DateTime.now();
+          await fetchMoreReports(apiUrl, accessToken!, pageNum);
+        }
       }
     }
 
@@ -103,8 +102,13 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
                     if (_scrollController.position.maxScrollExtent ==
                             scrollInfo.metrics.pixels &&
                         !isLastPage) {
-                      _onScroll();
-                      _atBottom = true;
+                      setState(() {
+                        isLoadingMoreData = true;
+                      });
+                      if (isLoadingMoreData) {
+                        _atBottom = true;
+                        _onScroll();
+                      }
                     }
                   } else {
                     _atBottom = false;
@@ -119,13 +123,26 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
                         padding: EdgeInsets.only(
                             top: 12, bottom: 12, left: 300, right: 12),
                         child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
+                          onPressed: () async  {
+                            final reLoad = await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => HDCreateReportScreen(),
                               ),
                             );
+                            if (reLoad == true) {
+                              setState(() {
+                                 isLoading = false;
+                                 isLoadingMoreData = false;
+                                 hasFetchedData = false;
+                                 _atBottom = false;
+                                 isLastPage = false;
+                                 totalRow = 0;
+                                 pageNum = 0;
+                                 data = [];
+                                 lastFetchTime = null;
+                              });
+                            }
                           },
                           style: ButtonStyle(
                             minimumSize: MaterialStateProperty.resolveWith(
@@ -152,7 +169,7 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
                               children: data.map((report) {
                                 return Padding(
                                   padding: EdgeInsets.only(
-                                      bottom: 12.0, left: 12, right: 12),
+                                      bottom: 24.0, left: 12, right: 12),
                                   child: Container(
                                     width: double.infinity,
                                     height: 120,
@@ -191,8 +208,7 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
                                                   '${report['label']}',
                                                   style: TextStyle(
                                                       fontWeight:
-                                                      FontWeight
-                                                          .bold,
+                                                          FontWeight.bold,
                                                       fontSize: 18.0),
                                                 ),
                                               ),
@@ -203,11 +219,10 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
                                               Flexible(
                                                 flex: 3,
                                                 child: Text(
-                                                  '${report['description'].length > 45
-                                                      ? '${report['description'] .substring(0, 45)}...' // Cắt sau số ký tự maxLength và thêm dấu "..."
-                                                      : report['description'] }',
-                                                  style: TextStyle(
-                                                      fontSize: 12.0),
+                                                  '${report['description'].length > 45 ? '${report['description'].substring(0, 45)}...' // Cắt sau số ký tự maxLength và thêm dấu "..."
+                                                      : report['description']}',
+                                                  style:
+                                                      TextStyle(fontSize: 12.0),
                                                 ),
                                               ),
                                             ],
@@ -224,29 +239,36 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
                                                 right: 12,
                                                 child: ElevatedButton(
                                                   onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              HDReportDetailScreen(
+                                                                  id: report[
+                                                                      'id'])),
+                                                    );
                                                   },
                                                   style: ButtonStyle(
-                                                    minimumSize: MaterialStateProperty
-                                                        .resolveWith(
-                                                            (states) =>
-                                                            Size(70,
-                                                                30)),
+                                                    minimumSize:
+                                                        MaterialStateProperty
+                                                            .resolveWith(
+                                                                (states) =>
+                                                                    Size(70,
+                                                                        30)),
                                                     shape: MaterialStateProperty
                                                         .all<
-                                                        RoundedRectangleBorder>(
+                                                            RoundedRectangleBorder>(
                                                       RoundedRectangleBorder(
                                                         borderRadius:
-                                                        BorderRadius
-                                                            .circular(
-                                                            24.0), // Điều chỉnh giá trị theo ý muốn
+                                                            BorderRadius.circular(
+                                                                24.0), // Điều chỉnh giá trị theo ý muốn
                                                       ),
                                                     ),
                                                   ),
                                                   child: Text(
                                                     'View Detail',
                                                     style: TextStyle(
-                                                      color:
-                                                      Colors.white,
+                                                      color: Colors.white,
                                                       // Đặt màu cho văn bản
                                                       fontSize: 12,
                                                       // Đặt kích thước của văn bản (tuỳ chọn)
@@ -265,6 +287,16 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
                                 );
                               }).toList(),
                             ),
+                      (isLoadingMoreData)
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.green),
+                              ),
+                            )
+                          : SizedBox(
+                              height: 40,
+                            ),
                     ]),
                   ),
                 ),
@@ -276,6 +308,7 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
   Future<void> fetchReports(String apiUrl, String accessToken) async {
     setState(() {
       isLoading = true;
+      data=[];
     });
     Map<String, String> bearerHeaders = {
       'Content-Type': 'application/json-patch+json',
@@ -291,7 +324,6 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
           if (pageNum >= totalRow / 10 - 1) isLastPage = true;
           final List<Map<String, dynamic>> body =
               jsonResponse['data'].cast<Map<String, dynamic>>();
-          print(body);
           data = body;
           isLoading = false;
         });
@@ -309,10 +341,6 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
 
   Future<void> fetchMoreReports(
       String apiUrl, String acceessToken, int pageNumber) async {
-    setState(() {
-      isLoading = true;
-      data = [];
-    });
     Map<String, String> bearerHeaders = {
       'Content-Type': 'application/json-patch+json',
       'Authorization': 'Bearer ${acceessToken}',
@@ -323,15 +351,22 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
           headers: bearerHeaders);
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
-        print(jsonResponse);
         setState(() {
-          isLoading = false;
+          isLoadingMoreData = false;
+          if (pageNum >= totalRow / 10 - 1) isLastPage = true;
+          final List<Map<String, dynamic>> newData =
+              jsonResponse['data'].cast<Map<String, dynamic>>();
+          data.addAll(newData);
         });
       } else {
         setState(() {
-          isLoading = false;
+          isLoadingMoreData = false;
         });
       }
-    } catch (e) {}
+    } catch (e) {
+      setState(() {
+        isLoadingMoreData = false;
+      });
+    }
   }
 }

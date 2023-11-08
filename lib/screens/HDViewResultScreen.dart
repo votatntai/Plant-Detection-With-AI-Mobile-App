@@ -131,36 +131,36 @@ class _HDViewResultScreenState extends State<HDViewResultScreen> {
               ),
             ),
           ),
-          SizedBox(height: 20),
-          Center(
-            child: Padding(
-              padding: EdgeInsets.only(left: 12, right: 12, bottom: 24),
-              child: Container(
-                width: double.infinity, // Đặt width là 100%
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () async {},
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            48.0), // Điều chỉnh giá trị theo ý muốn
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    'Report',
-                    style: TextStyle(
-                      color: Colors.white, // Đặt màu cho văn bản
-                      fontSize: 20, // Đặt kích thước của văn bản (tuỳ chọn)
-                      fontWeight:
-                          FontWeight.bold, // Đặt độ đậm của văn bản (tuỳ chọn)
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          // SizedBox(height: 20),
+          // Center(
+          //   child: Padding(
+          //     padding: EdgeInsets.only(left: 12, right: 12, bottom: 24),
+          //     child: Container(
+          //       width: double.infinity, // Đặt width là 100%
+          //       height: 50,
+          //       child: ElevatedButton(
+          //         onPressed: () async {},
+          //         style: ButtonStyle(
+          //           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          //             RoundedRectangleBorder(
+          //               borderRadius: BorderRadius.circular(
+          //                   48.0), // Điều chỉnh giá trị theo ý muốn
+          //             ),
+          //           ),
+          //         ),
+          //         child: Text(
+          //           'Report',
+          //           style: TextStyle(
+          //             color: Colors.white, // Đặt màu cho văn bản
+          //             fontSize: 20, // Đặt kích thước của văn bản (tuỳ chọn)
+          //             fontWeight:
+          //                 FontWeight.bold, // Đặt độ đậm của văn bản (tuỳ chọn)
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
           Padding(
             padding: EdgeInsets.only(left: 12.0, right: 12),
             // Chỉ định padding bên trái
@@ -218,33 +218,6 @@ class _HDViewResultScreenState extends State<HDViewResultScreen> {
             child: Text(
               'Below are some similar results',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 12, right: 12, bottom: 24.0),
-            child: Container(
-              width: double.infinity, // Đặt width là 100%
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () async {},
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          48.0), // Điều chỉnh giá trị theo ý muốn
-                    ),
-                  ),
-                ),
-                child: Text(
-                  'Report',
-                  style: TextStyle(
-                    color: Colors.white, // Đặt màu cho văn bản
-                    fontSize: 20, // Đặt kích thước của văn bản (tuỳ chọn)
-                    fontWeight:
-                        FontWeight.bold, // Đặt độ đậm của văn bản (tuỳ chọn)
-                  ),
-                ),
-              ),
             ),
           ),
           for (var estimate in estimates)

@@ -35,7 +35,9 @@ class _HDPlantFragmentState extends State<HDPlantFragment> {
   int pageNum = 0;
   bool _atBottom = false;
   bool isLastPage = false;
+  DateTime? lastFetchTime;
   List<String> categories = [];
+  bool isLoadingMoreData = false;
   String selectedCategory = 'Categories';
   String selectedCategoryId = '';
   bool isLoading = false;
@@ -63,12 +65,16 @@ class _HDPlantFragmentState extends State<HDPlantFragment> {
     super.dispose();
   }
 
-  void _onScroll() {
-    if (pageNum < totalRow/10 - 1) {
-      setState(() {
-        pageNum = pageNum + 1;
-      });
-      fetchMorePlant(apiUrl, PlantSearchController.text, pageNum);
+  void _onScroll() async {
+    if ((pageNum < totalRow / 10 - 1) && isLoadingMoreData && _atBottom) {
+      if (lastFetchTime == null ||
+          DateTime.now().difference(lastFetchTime!) > Duration(seconds: 1)) {
+        setState(() {
+          pageNum = pageNum + 1;
+        });
+        lastFetchTime = DateTime.now();
+        await fetchMorePlant(apiUrl, PlantSearchController.text, pageNum);
+      }
     }
   }
 
@@ -83,8 +89,13 @@ class _HDPlantFragmentState extends State<HDPlantFragment> {
               if (_scrollController.position.maxScrollExtent ==
                       scrollInfo.metrics.pixels &&
                   !isLastPage) {
-                _onScroll();
-                _atBottom = true;
+                setState(() {
+                  isLoadingMoreData = true;
+                });
+                if (isLoadingMoreData) {
+                  _atBottom = true;
+                  _onScroll();
+                }
               }
             } else {
               _atBottom = false;
@@ -307,6 +318,16 @@ class _HDPlantFragmentState extends State<HDPlantFragment> {
                                         size:
                                             20)) // Sẽ hiển thị khi có dữ liệu và đang tìm kiếm
                             : SizedBox(),
+                        (isLoadingMoreData)
+                            ? Center(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                            AlwaysStoppedAnimation<Color>(Colors.green),
+                          ),
+                        )
+                            : SizedBox(
+                          height: 40,
+                        ),
                       ],
                     ),
                 ],
@@ -321,6 +342,7 @@ class _HDPlantFragmentState extends State<HDPlantFragment> {
   Future<void> fetchPlant(String apiUrl, String search, int pageNumber) async {
     setState(() {
       isLoading = true;
+      data = [];
     });
     Map<String, String> bearerHeaders = {
       'Content-Type': 'application/json-patch+json',
@@ -381,6 +403,7 @@ class _HDPlantFragmentState extends State<HDPlantFragment> {
         api = api + '?pageNumber=${pageNumber}';
       final response = await http.get(Uri.parse(api), headers: bearerHeaders);
       if (response.statusCode == 200) {
+        isLoadingMoreData = false;
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         setState(() {
           if (pageNum >= totalRow - 1) isLastPage = true;
@@ -389,24 +412,15 @@ class _HDPlantFragmentState extends State<HDPlantFragment> {
           data.addAll(newData);
           isDataAvailable = data.isNotEmpty;
         });
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
-          if (_scrollController.hasClients && data.isNotEmpty) {
-            _scrollController.animateTo(
-              _scrollController.position.maxScrollExtent - 50,
-              duration: Duration(milliseconds: 300),
-              curve: Curves.easeOut,
-            );
-          }
-        });
       } else {
         setState(() {
-          isLoading = false;
+          isLoadingMoreData = false;
           isDataAvailable = false;
         });
       }
     } catch (e) {
       setState(() {
-        isLoading = false;
+        isLoadingMoreData = false;
         isDataAvailable = false;
       });
     }
