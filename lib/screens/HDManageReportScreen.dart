@@ -123,7 +123,7 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
                         padding: EdgeInsets.only(
                             top: 12, bottom: 12, left: 300, right: 12),
                         child: ElevatedButton(
-                          onPressed: () async  {
+                          onPressed: () async {
                             final reLoad = await Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -132,15 +132,15 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
                             );
                             if (reLoad == true) {
                               setState(() {
-                                 isLoading = false;
-                                 isLoadingMoreData = false;
-                                 hasFetchedData = false;
-                                 _atBottom = false;
-                                 isLastPage = false;
-                                 totalRow = 0;
-                                 pageNum = 0;
-                                 data = [];
-                                 lastFetchTime = null;
+                                isLoading = false;
+                                isLoadingMoreData = false;
+                                hasFetchedData = false;
+                                _atBottom = false;
+                                isLastPage = false;
+                                totalRow = 0;
+                                pageNum = 0;
+                                data = [];
+                                lastFetchTime = null;
                               });
                             }
                           },
@@ -151,14 +151,20 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
-                                    24.0), // Điều chỉnh giá trị theo ý muốn
+                                    12.0), // Điều chỉnh giá trị theo ý muốn
                               ),
                             ),
                           ),
                           child: Row(
                             children: [
-                              Text('New'),
-                              Icon(Icons.add, size: 30, color: Colors.white),
+                              Text(
+                                'New',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Icon(Icons.add, size: 30, color: Colors.black),
                             ],
                           ),
                         ),
@@ -261,14 +267,14 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
                                                       RoundedRectangleBorder(
                                                         borderRadius:
                                                             BorderRadius.circular(
-                                                                24.0), // Điều chỉnh giá trị theo ý muốn
+                                                                6.0), // Điều chỉnh giá trị theo ý muốn
                                                       ),
                                                     ),
                                                   ),
                                                   child: Text(
                                                     'View Detail',
                                                     style: TextStyle(
-                                                      color: Colors.white,
+                                                      color: Colors.black,
                                                       // Đặt màu cho văn bản
                                                       fontSize: 12,
                                                       // Đặt kích thước của văn bản (tuỳ chọn)
@@ -308,7 +314,7 @@ class _HDManageReportScreenState extends State<HDManageReportScreen> {
   Future<void> fetchReports(String apiUrl, String accessToken) async {
     setState(() {
       isLoading = true;
-      data=[];
+      data = [];
     });
     Map<String, String> bearerHeaders = {
       'Content-Type': 'application/json-patch+json',

@@ -43,7 +43,6 @@ class _HDPlantFragmentState extends State<HDPlantFragment> {
   bool isLoading = false;
   final apiUrl = APIUrl.getUrl();
 
-
   ScrollController _scrollController = ScrollController();
 
   List<Map<String, dynamic>> data = [];
@@ -163,18 +162,48 @@ class _HDPlantFragmentState extends State<HDPlantFragment> {
                             ),
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            setState(() {
-                              data = [];
-                              pageNum = 0;// Xóa dữ liệu hiện tại bằng cách gán danh sách thành mảng rỗng
-                              isSearching = true;
-                              isLastPage = false;
-                            });
-                            await fetchPlant(
-                                apiUrl, PlantSearchController.text, pageNum);
-                          },
-                          child: Text('Search'),
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.only(top:16, left: 16, right: 16),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              setState(() {
+                                data = [];
+                                pageNum =
+                                0; // Xóa dữ liệu hiện tại bằng cách gán danh sách thành mảng rỗng
+                                isSearching = true;
+                                isLastPage = false;
+                              });
+                              await fetchPlant(
+                                  apiUrl, PlantSearchController.text, pageNum);
+                            },
+                            style: ButtonStyle(
+                              minimumSize: MaterialStateProperty
+                                  .resolveWith(
+                                      (states) =>
+                                      Size(200,
+                                          50)),
+                              shape: MaterialStateProperty
+                                  .all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius:
+                                  BorderRadius
+                                      .circular(
+                                      12.0), // Điều chỉnh giá trị theo ý muốn
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              'Search',
+                              style: TextStyle(
+                                color: Colors.black,
+                                // Đặt màu cho văn bản
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                         ),
                         20.height,
                         isSearching
@@ -284,7 +313,7 @@ class _HDPlantFragmentState extends State<HDPlantFragment> {
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .circular(
-                                                                            24.0), // Điều chỉnh giá trị theo ý muốn
+                                                                            6.0), // Điều chỉnh giá trị theo ý muốn
                                                               ),
                                                             ),
                                                           ),
@@ -292,7 +321,7 @@ class _HDPlantFragmentState extends State<HDPlantFragment> {
                                                             'View Detail',
                                                             style: TextStyle(
                                                               color:
-                                                                  Colors.white,
+                                                                  Colors.black,
                                                               // Đặt màu cho văn bản
                                                               fontSize: 12,
                                                               // Đặt kích thước của văn bản (tuỳ chọn)
@@ -320,14 +349,14 @@ class _HDPlantFragmentState extends State<HDPlantFragment> {
                             : SizedBox(),
                         (isLoadingMoreData)
                             ? Center(
-                          child: CircularProgressIndicator(
-                            valueColor:
-                            AlwaysStoppedAnimation<Color>(Colors.green),
-                          ),
-                        )
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.green),
+                                ),
+                              )
                             : SizedBox(
-                          height: 40,
-                        ),
+                                height: 40,
+                              ),
                       ],
                     ),
                 ],
@@ -350,8 +379,8 @@ class _HDPlantFragmentState extends State<HDPlantFragment> {
     var api = apiUrl + '/api/plants';
     try {
       if (selectedCategoryId != '' && search == '')
-        api = api +
-            '?categoryId=${selectedCategoryId}&pageNumber=${pageNumber}';
+        api =
+            api + '?categoryId=${selectedCategoryId}&pageNumber=${pageNumber}';
       else if (search != '' && selectedCategoryId == '')
         api = api + '?name=${search}&pageNumber=${pageNumber}';
       else if (search != '' && selectedCategoryId != '')
@@ -364,7 +393,7 @@ class _HDPlantFragmentState extends State<HDPlantFragment> {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         setState(() {
           totalRow = jsonResponse['pagination']['totalRow'];
-          if (pageNum >= totalRow/10 - 1) isLastPage = true;
+          if (pageNum >= totalRow / 10 - 1) isLastPage = true;
           isLoading = false;
           final List<Map<String, dynamic>> body =
               jsonResponse['data'].cast<Map<String, dynamic>>();
@@ -385,15 +414,16 @@ class _HDPlantFragmentState extends State<HDPlantFragment> {
     }
   }
 
-  Future<void> fetchMorePlant(String apiUrl, String search, int pageNumber) async {
+  Future<void> fetchMorePlant(
+      String apiUrl, String search, int pageNumber) async {
     Map<String, String> bearerHeaders = {
       'Content-Type': 'application/json-patch+json',
     };
     var api = apiUrl + '/api/plants';
     try {
       if (selectedCategoryId != '' && search == '')
-        api = api +
-            '?categoryId=${selectedCategoryId}&pageNumber=${pageNumber}';
+        api =
+            api + '?categoryId=${selectedCategoryId}&pageNumber=${pageNumber}';
       else if (search != '' && selectedCategoryId == '')
         api = api + '?name=${search}&pageNumber=${pageNumber}';
       else if (search != '' && selectedCategoryId != '')
@@ -408,7 +438,7 @@ class _HDPlantFragmentState extends State<HDPlantFragment> {
         setState(() {
           if (pageNum >= totalRow - 1) isLastPage = true;
           final List<Map<String, dynamic>> newData =
-          jsonResponse['data'].cast<Map<String, dynamic>>();
+              jsonResponse['data'].cast<Map<String, dynamic>>();
           data.addAll(newData);
           isDataAvailable = data.isNotEmpty;
         });

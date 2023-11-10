@@ -59,14 +59,23 @@ class _HDUpdateProfileScreenState extends State<HDUpdateProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: TextButton(
-            onPressed: () {
-              finish(context);
-            },
-            child: Text('Cancel',
-                style: primaryTextStyle(color: miaPrimaryColor))),
-        leadingWidth: 80,
-        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: miaPrimaryColor),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ).paddingSymmetric(horizontal: 8),
+        title: Padding(
+          padding: EdgeInsets.only(left: 96),
+          child: Text(
+            'Profile',
+            style: TextStyle(
+              color: Colors.black, // Màu chữ
+              fontWeight: FontWeight.bold,
+              fontSize: 24.0, // Kích thước chữ
+            ),
+          ),
+        ),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -212,72 +221,76 @@ class _HDUpdateProfileScreenState extends State<HDUpdateProfileScreen> {
                   ),
                 ),
                 SizedBox(height: 20.0),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      try {
-                        Map<String, String> bearerHeaders = {
-                          'Content-Type': 'application/json-patch+json',
-                        };
-                        final Map<String, dynamic> data = {
-                          "firstName": "${firstNameController.text}",
-                          "lastName": "${lastNameController.text}",
-                          "avatarUrl": "${currenUser?.avatarUrl}",
-                          "college": "${collegeController.text}",
-                          "phone": "${phoneController.text}",
-                          "address": "${addressController.text}",
-                          "dayOfBirth": "${dayOfBirthController.text}"
-                        };
-                        final response = await http.put(
-                          Uri.parse(apiUrl + '/api/students/${currenUser?.id}'),
-                          headers: bearerHeaders,
-                          body: jsonEncode(data),
-                        );
-                        print(response.statusCode);
-                        if (response.statusCode == 200) {
-                          _showUpdateSuccessDialog(context);
-                          final Map<String, dynamic> responseData =
-                              json.decode(response.body);
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.only(left: 16, right: 16),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        try {
+                          Map<String, String> bearerHeaders = {
+                            'Content-Type': 'application/json-patch+json',
+                          };
+                          final Map<String, dynamic> data = {
+                            "firstName": "${firstNameController.text}",
+                            "lastName": "${lastNameController.text}",
+                            "avatarUrl": "${currenUser?.avatarUrl}",
+                            "college": "${collegeController.text}",
+                            "phone": "${phoneController.text}",
+                            "address": "${addressController.text}",
+                            "dayOfBirth": "${dayOfBirthController.text}"
+                          };
+                          final response = await http.put(
+                            Uri.parse(apiUrl + '/api/students/${currenUser?.id}'),
+                            headers: bearerHeaders,
+                            body: jsonEncode(data),
+                          );
+                          print(response.statusCode);
+                          if (response.statusCode == 200) {
+                            _showUpdateSuccessDialog(context);
+                            final Map<String, dynamic> responseData =
+                            json.decode(response.body);
 
-                          setState(() {
-                            currenUser = HDUserModel(
-                              id: responseData['id'] ?? '',
-                              firstName: responseData['firstName'] ?? '',
-                              lastName: responseData['lastName'] ?? '',
-                              email: responseData['email'] ?? '',
-                              avatarUrl: responseData['avatarUrl'] ?? '',
-                              college: responseData['college'] ?? '',
-                              phone: responseData['phone'] ?? '',
-                              address: responseData['address'] ?? '',
-                              dayOfBirth: responseData['dayOfBirth'] ?? '',
-                              status: responseData['status'] ?? 'inActive',
-                            );
-                            userProvider.setCurrentUser(currenUser!);
-                          });
-                        }
-                      } catch (e) {}
-                    }
-                  },
-                  style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.resolveWith(
-                        (states) => Size(200, 50)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            24.0), // Điều chỉnh giá trị theo ý muốn
+                            setState(() {
+                              currenUser = HDUserModel(
+                                id: responseData['id'] ?? '',
+                                firstName: responseData['firstName'] ?? '',
+                                lastName: responseData['lastName'] ?? '',
+                                email: responseData['email'] ?? '',
+                                avatarUrl: responseData['avatarUrl'] ?? '',
+                                college: responseData['college'] ?? '',
+                                phone: responseData['phone'] ?? '',
+                                address: responseData['address'] ?? '',
+                                dayOfBirth: responseData['dayOfBirth'] ?? '',
+                                status: responseData['status'] ?? 'inActive',
+                              );
+                              userProvider.setCurrentUser(currenUser!);
+                            });
+                          }
+                        } catch (e) {}
+                      }
+                    },
+                    style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.resolveWith(
+                              (states) => Size(200, 50)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              12.0), // Điều chỉnh giá trị theo ý muốn
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      'Update',
+                      style: TextStyle(
+                        color: Colors.black, // Đặt màu cho văn bản
+                        fontSize: 24, // Đặt kích thước của văn bản (tuỳ chọn)
+                        fontWeight:
+                        FontWeight.bold, // Đặt độ đậm của văn bản (tuỳ chọn)
                       ),
                     ),
                   ),
-                  child: Text(
-                    'Update',
-                    style: TextStyle(
-                      color: Colors.white, // Đặt màu cho văn bản
-                      fontSize: 24, // Đặt kích thước của văn bản (tuỳ chọn)
-                      fontWeight:
-                          FontWeight.bold, // Đặt độ đậm của văn bản (tuỳ chọn)
-                    ),
-                  ),
-                ),
+                )
               ],
             ),
           ),

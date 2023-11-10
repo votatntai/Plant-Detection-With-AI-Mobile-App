@@ -117,7 +117,7 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
                   borderRadius: BorderRadius.circular(12),
                   // Điều chỉnh giá trị theo ý muốn
                   child: Image.network(
-                    plant['images'][_currentImageIndex]['url'],
+                    plant['images'][_currentImageIndex]['url'] ?? 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png',
                     fit: BoxFit.cover,
                   ),
                 ),

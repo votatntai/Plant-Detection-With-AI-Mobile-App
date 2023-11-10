@@ -94,9 +94,121 @@ class _HDClassDetailScreenState extends State<HDClassDetailScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               20.height,
-              Text('Class Details',
-                  style: boldTextStyle(color: miaSecondaryColor, size: 20)),
-              Divider(height: 2, color: Colors.black),
+              Padding(
+                padding: EdgeInsets.only(top: 12, left: 12, right: 12),
+                // Chỉ định padding bên trái
+                child: Container(
+                  height: 300,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.white,
+                    border: Border.all(
+                      color: Colors.black12,
+                      // Màu viền cho hình ảnh xem trước được chọn
+                      width: 2.0,
+                    ),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    // Điều chỉnh giá trị theo ý muốn
+                    child: Image.network(
+                      classModel?.thumbnailUrl ??
+                          'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+              20.height,
+              Container(
+                width: double.infinity,
+                height: 50,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 16, right: 16),
+                    child: Row(
+                      children: studentList.map((student) {
+                        return GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Row(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 16),
+                                        child: Container(
+                                          height: 50,
+                                          width: 50,
+                                          child: CircleAvatar(
+                                            backgroundImage: NetworkImage(
+                                                student.avatarUrl.toString()),
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        '${student.firstName} ${student.lastName}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  content: Container(
+                                    height: 85,
+                                    child: Column(
+                                      children: [
+                                        Text('${student.email}' ?? 'email'),
+                                        20.height,
+                                        Container(
+                                          padding: EdgeInsets.only(
+                                              left: 16,
+                                              right: 16,
+                                              top: 8,
+                                              bottom: 8),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(24),
+                                            color: (student.classStatus ==
+                                                    'Pending Approval')
+                                                ? Colors.yellow
+                                                : Colors.green,
+                                          ),
+                                          child: Text(
+                                              '${student.classStatus}' ??
+                                                  'status'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: Text('OK'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          child: Container(
+                            height: 50,
+                            width: 50,
+                            child: CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage(student.avatarUrl.toString()),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+              ),
               20.height,
               Container(
                 padding: EdgeInsets.only(left: 16.0, right: 16.0),
@@ -215,105 +327,100 @@ class _HDClassDetailScreenState extends State<HDClassDetailScreen> {
               if (!isMember && hasFetchedData)
                 Column(
                   children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          Map<String, String> bearerHeaders = {
-                            'Content-Type': 'application/json-patch+json',
-                            'Authorization':
-                                'Bearer ${userProvider.accessToken}',
-                          };
-                          final queryParameters = {
-                            'classId': '${classModel?.id}',
-                          };
-                          final response = await http.post(
-                              Uri.parse(apiUrl + '/api/classes/request-to-join')
-                                  .replace(queryParameters: {
-                                'classId': classModel?.id,
-                              }),
-                              headers: bearerHeaders);
-                          if (response.statusCode == 200) {
-                            setState(() {
-                              isMember = true;
-                              hasFetchedData = false;
-                              _showRequestSuccessDialog(context);
-                            });
-                          } else {}
-                        } catch (e) {}
-                      },
-                      child: Text('Enroll Me'),
+                    Container(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          try {
+                            Map<String, String> bearerHeaders = {
+                              'Content-Type': 'application/json-patch+json',
+                              'Authorization':
+                                  'Bearer ${userProvider.accessToken}',
+                            };
+                            final queryParameters = {
+                              'classId': '${classModel?.id}',
+                            };
+                            final response = await http.post(
+                                Uri.parse(
+                                        apiUrl + '/api/classes/request-to-join')
+                                    .replace(queryParameters: {
+                                  'classId': classModel?.id,
+                                }),
+                                headers: bearerHeaders);
+                            if (response.statusCode == 200) {
+                              setState(() {
+                                isMember = true;
+                                hasFetchedData = false;
+                                Navigator.pop(context);
+                                _showRequestSuccessDialog(context);
+                              });
+                            } else {}
+                          } catch (e) {}
+                        },
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  12.0), // Điều chỉnh giá trị theo ý muốn
+                            ),
+                          ),
+                        ),
+                        child: Text(
+                          'Enroll Me',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              if (hasFetchedData)
-                Column(
-                  children: [
-                    Text(
-                      'List Of Members', // Đặt tiêu đề ở đây
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize:
-                            18, // Cỡ chữ và các thuộc tính khác của văn bản
-                      ),
-                    ),
-                    Divider(height: 2, color: Colors.black),
-                    20.height,
-                    SingleChildScrollView(
-                      child: Column(
-                        children: studentList.map((student) {
-                          return ListTile(
-                            leading: CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(student.avatarUrl.toString()),
+              if (hasFetchedData && isMember)
+                if (classModel?.status == 'Opening')
+                  Column(
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.only(bottom: 16, left: 16, right: 16),
+                        child: Container(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        HDManageReportScreen()),
+                              );
+                            },
+                            style: ButtonStyle(
+                              minimumSize: MaterialStateProperty.resolveWith(
+                                  (states) => Size(200, 50)),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      12.0), // Điều chỉnh giá trị theo ý muốn
+                                ),
+                              ),
                             ),
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                    student.firstName + ' ' + student.lastName),
-                                Text(student.email),
-                              ],
+                            child: Text(
+                              'Reports',
+                              style: TextStyle(
+                                color: Colors.black,
+                                // Đặt màu cho văn bản
+                                fontSize: 18,
+                                // Đặt kích thước của văn bản (tuỳ chọn)
+                                fontWeight: FontWeight
+                                    .bold, // Đặt độ đậm của văn bản (tuỳ chọn)
+                              ),
                             ),
-                            subtitle: Text(student.classStatus ?? ''),
-                          );
-                        }).toList(),
+                          ),
+                        ),
                       ),
-                    ),
-                    20.height,
-                  ],
-                ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 16),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              HDManageReportScreen()),
-                    );
-                  },
-                  style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.resolveWith(
-                        (states) => Size(200, 50)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            24.0), // Điều chỉnh giá trị theo ý muốn
-                      ),
-                    ),
+                    ],
                   ),
-                  child: Text(
-                    'Reports',
-                    style: TextStyle(
-                      color: Colors.white, // Đặt màu cho văn bản
-                      fontSize: 18, // Đặt kích thước của văn bản (tuỳ chọn)
-                      fontWeight:
-                      FontWeight.bold, // Đặt độ đậm của văn bản (tuỳ chọn)
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),

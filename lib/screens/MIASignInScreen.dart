@@ -122,6 +122,8 @@ class MIASignInScreen extends StatelessWidget {
                           print('Error: $e');
                         }
                       }
+                    } else {
+                      hideLoadingDialog(context);
                     }
                   } catch (e) {
                     hideLoadingDialog(context);
@@ -131,7 +133,7 @@ class MIASignInScreen extends StatelessWidget {
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(48.0), // Điều chỉnh giá trị theo ý muốn
+                      borderRadius: BorderRadius.circular(12.0), // Điều chỉnh giá trị theo ý muốn
                     ),
                   ),
                 ),
@@ -143,10 +145,10 @@ class MIASignInScreen extends StatelessWidget {
                 label: Text(
                   'Sign in with Google',
                   style: TextStyle(
-                    color: Colors.white, // Đặt màu cho văn bản
+                    color: Colors.black, // Đặt màu cho văn bản
                     fontSize: 20, // Đặt kích thước của văn bản (tuỳ chọn)
                     fontWeight:
-                        FontWeight.bold, // Đặt độ đậm của văn bản (tuỳ chọn)
+                    FontWeight.bold, // Đặt độ đậm của văn bản (tuỳ chọn)
                   ),
                 ),
               ),

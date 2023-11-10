@@ -303,14 +303,14 @@ class _HDViewResultScreenState extends State<HDViewResultScreen> {
                                     RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
-                                        24.0), // Điều chỉnh giá trị theo ý muốn
+                                        6.0), // Điều chỉnh giá trị theo ý muốn
                                   ),
                                 ),
                               ),
                               child: Text(
                                 'View Detail',
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   // Đặt màu cho văn bản
                                   fontSize: 12,
                                   // Đặt kích thước của văn bản (tuỳ chọn)

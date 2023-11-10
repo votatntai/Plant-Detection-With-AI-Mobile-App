@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:Detection/main.dart';
 import 'package:Detection/models/HDClassModel.dart';
+import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../providers/APIUrl.dart';
 import '../providers/UserProvider.dart';
@@ -25,9 +27,14 @@ class _HDClassFragmentState extends State<HDClassFragment> {
   HDClassModel? currentClass;
   TextEditingController enrollCodeController = TextEditingController();
   bool isLoading = false;
+  final apiUrl = APIUrl.getUrl();
   bool classNotFound = false;
   bool showEnrollInput = false;
   bool hasFetchedData = false;
+
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  Barcode? result;
+  QRViewController? controller;
 
   @override
   void initState() {
@@ -52,7 +59,6 @@ class _HDClassFragmentState extends State<HDClassFragment> {
 
   @override
   Widget build(BuildContext context) {
-    final apiUrl = APIUrl.getUrl();
     final userProvider = Provider.of<UserProvider>(context);
     String? accessToken = userProvider.accessToken;
 
@@ -81,28 +87,21 @@ class _HDClassFragmentState extends State<HDClassFragment> {
                   children: [
                     Text('You have not enrolled any class'),
                     ElevatedButton(
-                      onPressed: handleEnrollButtonPress,
-                      child: Text('Enroll Class'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return QRView(
+                              key: qrKey,
+                              onQRViewCreated: _onQRViewCreated,
+                            );
+                          }),
+                        );
+                      },
+                      child: Text('Enroll class with QR Code'),
                     ),
                   ],
                 ),
-              ),
-            if (!isLoading &&
-                showEnrollInput ==
-                    true) // Hiển thị mục nhập mã lớp nếu currentClass không null
-              Column(
-                children: [
-                  Text('Enter class code:'),
-                  TextField(
-                    controller: enrollCodeController,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      findClassByCode(apiUrl, enrollCodeController.text);
-                    },
-                    child: Text('Submit'),
-                  ),
-                ],
               ),
             if (!isLoading && currentClass != null)
               GestureDetector(
@@ -119,49 +118,82 @@ class _HDClassFragmentState extends State<HDClassFragment> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: ListTile(
-                    title: Text('${currentClass!.code}-' + currentClass!.name),
+                    title: Container(
+                      width: double.infinity,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              '${currentClass!.code}',
+                              style: TextStyle(
+                                // Đặt màu cho văn bản
+                                fontSize: 24,
+                                // Đặt kích thước của văn bản (tuỳ chọn)
+                                fontWeight: FontWeight
+                                    .bold, // Đặt độ đậm của văn bản (tuỳ chọn)
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              currentClass?.createAt != null
+                                  ? DateFormat('dd-MM-yyyy').format(
+                                      DateTime.parse(currentClass!.createAt))
+                                  : 'CreateAt',
+                              style: TextStyle(
+                                // Đặt màu cho văn bản
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          currentClass!.description.length > 35
-                              ? '${currentClass!.description.substring(0, 35)}...'
-                              : '${currentClass!.description}',
+                        10.height,
+                        Container(
+                          height: 250,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white,
+                            border: Border.all(
+                              color: Colors.black12,
+                              // Màu viền cho hình ảnh xem trước được chọn
+                              width: 2.0,
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            // Điều chỉnh giá trị theo ý muốn
+                            child: Image.network(
+                              currentClass?.thumbnailUrl ??
+                                  'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
+                        10.height,
                         Text(
-                            'Number of students: ${currentClass!.numberOfMember.toString()}'),
-                        Row(
-                          children: [
-                            Text('Manager: '),
-                            Container(
-                              height: 20,
-                              width: 20,
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    currentClass!.manager.avatarUrl),
-                              ),
-                            ),
-                            Text(
-                              currentClass!.manager.email.length > 25
-                                  ? '${currentClass!.manager.email.substring(0, 25)}...'
-                                  : '${currentClass!.manager.email}',
-                            ),
-                          ],
+                          currentClass!.name.length > 30
+                              ? ' ${currentClass!.name.substring(0, 30)}...'
+                              : ' ${currentClass!.name}',
+                          style: TextStyle(
+                            // Đặt màu cho văn bản
+                            fontSize: 16,
+                            // Đặt kích thước của văn bản (tuỳ chọn), // Đặt độ đậm của văn bản (tuỳ chọn)
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ),
-              ),
-            if (classNotFound && currentClass == null)
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Class not found',
-                        style:
-                            boldTextStyle(color: miaSecondaryColor, size: 20)),
-                  ],
                 ),
               ),
           ]).paddingSymmetric(horizontal: 16),
@@ -201,8 +233,37 @@ class _HDClassFragmentState extends State<HDClassFragment> {
     } catch (e) {}
   }
 
+  void _onQRViewCreated(QRViewController controller) {
+    this.controller = controller;
+    controller.scannedDataStream.listen((scanData) async {
+      setState(() {
+        result = scanData;
+        controller.stopCamera();
+      });
+      if (result != null && result!.code != null) {
+        await findClassByCode(apiUrl, result!.code!);
+        if (currentClass != null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  HDClassDetailScreen(classModel: currentClass!),
+            ),
+          );
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
+
   Future<void> findClassByCode(String apiUrl, String code) async {
     setState(() {
+      currentClass = null;
       isLoading = true;
     });
     Map<String, String> bearerHeaders = {
@@ -217,17 +278,14 @@ class _HDClassFragmentState extends State<HDClassFragment> {
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         final HDClassModel responseClass = HDClassModel.fromJson(jsonResponse);
-
         setState(() {
           currentClass = responseClass;
           isLoading = false;
-          classNotFound = false;
         });
       } else {
         setState(() {
           currentClass = null;
           isLoading = false;
-          classNotFound = true;
         });
       }
     } catch (e) {}
