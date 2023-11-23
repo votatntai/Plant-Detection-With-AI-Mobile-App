@@ -4,22 +4,34 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../utils/MIAColors.dart';
+import 'HDViewImageInClassScreen.dart';
 
-class HDTakePhotoInClassScreen extends StatefulWidget {
+class HDDetectPlantInClassScreen extends StatefulWidget {
   final CameraController controller;
 
-  HDTakePhotoInClassScreen({required this.controller});
+  final String classId;
+
+  HDDetectPlantInClassScreen({required this.controller, required this.classId});
 
   @override
-  _HDTakePhotoInClassScreenState createState() =>
-      _HDTakePhotoInClassScreenState(controller: controller);
+  _HDDetectPlantInClassScreenState createState() =>
+      _HDDetectPlantInClassScreenState(controller: controller, classId: classId);
 }
 
-class _HDTakePhotoInClassScreenState extends State<HDTakePhotoInClassScreen> {
+class _HDDetectPlantInClassScreenState
+    extends State<HDDetectPlantInClassScreen> {
   final CameraController controller;
   late File? capturedImage = null;
+  late String classId;
 
-  _HDTakePhotoInClassScreenState({required this.controller});
+  _HDDetectPlantInClassScreenState({required this.controller, required this.classId});
+
+  @override
+  void initState() {
+    super.initState();
+    classId = widget.classId;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,8 +94,17 @@ class _HDTakePhotoInClassScreenState extends State<HDTakePhotoInClassScreen> {
                         if (picture != null) {
                           File selectedImage = File(picture.path);
                           setState(() {
-                            capturedImage = selectedImage;
+                            capturedImage =
+                                selectedImage; // Gán ảnh đã chọn vào capturedImage
                           });
+                          // Chuyển đến màn hình xem ảnh
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  HDViewImageInClassScreen(image: capturedImage, classId: classId,),
+                            ),
+                          );
                         }
                       } catch (e) {
                         print('Error picking image: $e');
@@ -134,10 +155,19 @@ class _HDTakePhotoInClassScreenState extends State<HDTakePhotoInClassScreen> {
                         hideLoadingDialog(context);
                         if (picture != null) {
                           File selectedImage = File(picture.path);
-                          print('Captured image path: ${selectedImage.path}');
                           setState(() {
-                            capturedImage = selectedImage;
+                            capturedImage =
+                                selectedImage; // Gán ảnh đã chọn vào capturedImage
                           });
+                          // Chuyển đến màn hình xem ảnh
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  HDViewImageInClassScreen(
+                                      image: capturedImage, classId: classId,),
+                            ),
+                          );
                         }
                       } catch (e) {
                         print('Error capturing image: $e');
@@ -162,26 +192,27 @@ class _HDTakePhotoInClassScreenState extends State<HDTakePhotoInClassScreen> {
                 ),
                 SizedBox(width: 20),
                 Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pop(context, capturedImage?.path);
-                    },
-                    child: Container(
-                      width: 68.0,
-                      height: 68.0,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.blue,
-                      ),
-                      child: Center(
-                        child: Icon(
-                          Icons.send,
-                          color: Colors.white,
-                          size: 36.0,
-                        ),
-                      ),
-                    ),
-                  ),
+                  child: SizedBox(),
+                  // child: InkWell(
+                  //   onTap: () {
+                  //     Navigator.pop(context, capturedImage?.path);
+                  //   },
+                  //   child: Container(
+                  //     width: 68.0,
+                  //     height: 68.0,
+                  //     decoration: BoxDecoration(
+                  //       shape: BoxShape.circle,
+                  //       color: Colors.blue,
+                  //     ),
+                  //     child: Center(
+                  //       child: Icon(
+                  //         Icons.send,
+                  //         color: Colors.white,
+                  //         size: 36.0,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ),
                 SizedBox(width: 20),
               ],
