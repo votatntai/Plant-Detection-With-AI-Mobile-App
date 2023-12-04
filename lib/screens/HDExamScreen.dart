@@ -184,6 +184,7 @@ class _HDExamScreenState extends State<HDExamScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Divider(height: 2, color: Colors.black),
                           Text(
                             'Question ${getIndexById(questions, question.id) + 1}',
                             style: TextStyle(fontWeight: FontWeight.bold),
@@ -222,81 +223,121 @@ class _HDExamScreenState extends State<HDExamScreen> {
                           ),
                           Row(
                             children: [
-                              Radio(
-                                value: 'A',
-                                groupValue: selectedAnswers[
-                                    getIndexById(questions, question.id)],
-                                onChanged: (value) {
+                              GestureDetector(
+                                onTap: () {
                                   setState(() {
-                                    selectedAnswers[getIndexById(
-                                            questions, question.id)] =
-                                        value as String;
+                                    // Đảo ngược trạng thái của radio khi nhấn vào dòng
+                                    selectedAnswers[getIndexById(questions, question.id)] =
+                                    (selectedAnswers[getIndexById(questions, question.id)] == 'A')
+                                        ? ""
+                                        : 'A';
                                   });
                                 },
-                              ),
-                              Text(
-                                'A. ${question.answerA}',
-                                style: TextStyle(fontSize: 18),
+                                child: Row(
+                                  children: [
+                                    Radio(
+                                      value: 'A',
+                                      groupValue: selectedAnswers[getIndexById(questions, question.id)],
+                                      onChanged: (value) {
+                                        // Không cần phải làm gì cả vì đã xử lý trong GestureDetector
+                                      },
+                                    ),
+                                    Text(
+                                      'A. ${question.answerA}',
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                           Row(
                             children: [
-                              Radio(
-                                value: 'B',
-                                groupValue: selectedAnswers[
-                                    getIndexById(questions, question.id)],
-                                onChanged: (value) {
+                              GestureDetector(
+                                onTap: () {
                                   setState(() {
-                                    selectedAnswers[getIndexById(
-                                            questions, question.id)] =
-                                        value as String;
+                                    // Đảo ngược trạng thái của radio khi nhấn vào dòng
+                                    selectedAnswers[getIndexById(questions, question.id)] =
+                                    (selectedAnswers[getIndexById(questions, question.id)] == 'B')
+                                        ? ""
+                                        : 'B';
                                   });
                                 },
-                              ),
-                              Text(
-                                'B. ${question.answerB}',
-                                style: TextStyle(fontSize: 18),
+                                child: Row(
+                                  children: [
+                                    Radio(
+                                      value: 'B',
+                                      groupValue: selectedAnswers[getIndexById(questions, question.id)],
+                                      onChanged: (value) {
+                                        // Không cần phải làm gì cả vì đã xử lý trong GestureDetector
+                                      },
+                                    ),
+                                    Text(
+                                      'B. ${question.answerB}',
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                           Row(
                             children: [
-                              Radio(
-                                value: 'C',
-                                groupValue: selectedAnswers[
-                                    getIndexById(questions, question.id)],
-                                onChanged: (value) {
+                              GestureDetector(
+                                onTap: () {
                                   setState(() {
-                                    selectedAnswers[getIndexById(
-                                            questions, question.id)] =
-                                        value as String;
+                                    // Đảo ngược trạng thái của radio khi nhấn vào dòng
+                                    selectedAnswers[getIndexById(questions, question.id)] =
+                                    (selectedAnswers[getIndexById(questions, question.id)] == 'C')
+                                        ? ""
+                                        : 'C';
                                   });
                                 },
-                              ),
-                              Text(
-                                'C. ${question.answerC}',
-                                style: TextStyle(fontSize: 18),
+                                child: Row(
+                                  children: [
+                                    Radio(
+                                      value: 'C',
+                                      groupValue: selectedAnswers[getIndexById(questions, question.id)],
+                                      onChanged: (value) {
+                                        // Không cần phải làm gì cả vì đã xử lý trong GestureDetector
+                                      },
+                                    ),
+                                    Text(
+                                      'C. ${question.answerC}',
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                           Row(
                             children: [
-                              Radio(
-                                value: 'D',
-                                groupValue: selectedAnswers[
-                                    getIndexById(questions, question.id)],
-                                onChanged: (value) {
+                              GestureDetector(
+                                onTap: () {
                                   setState(() {
-                                    selectedAnswers[getIndexById(
-                                            questions, question.id)] =
-                                        value as String;
+                                    // Đảo ngược trạng thái của radio khi nhấn vào dòng
+                                    selectedAnswers[getIndexById(questions, question.id)] =
+                                    (selectedAnswers[getIndexById(questions, question.id)] == 'D')
+                                        ? ""
+                                        : 'D';
                                   });
                                 },
-                              ),
-                              Text(
-                                'D. ${question.answerD}',
-                                style: TextStyle(fontSize: 18),
+                                child: Row(
+                                  children: [
+                                    Radio(
+                                      value: 'D',
+                                      groupValue: selectedAnswers[getIndexById(questions, question.id)],
+                                      onChanged: (value) {
+                                        // Không cần phải làm gì cả vì đã xử lý trong GestureDetector
+                                      },
+                                    ),
+                                    Text(
+                                      'D. ${question.answerD}',
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),

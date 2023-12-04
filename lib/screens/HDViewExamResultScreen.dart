@@ -59,7 +59,6 @@ class _HDViewExamResultScreenState extends State<HDViewExamResultScreen> {
             HDQuestionResultModel newQuestionResult =
                 HDQuestionResultModel.fromJson(questionResult);
             newQuestionResults.add(newQuestionResult);
-            print(questionResult);
           }
           setState(() {
             score = jsonMap['score'];
@@ -139,6 +138,7 @@ class _HDViewExamResultScreenState extends State<HDViewExamResultScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Divider(height: 2, color: Colors.black),
                           Text(
                             'Question ${getIndexById(questions, question.id) + 1}',
                             style: TextStyle(fontWeight: FontWeight.bold),
@@ -214,18 +214,38 @@ class _HDViewExamResultScreenState extends State<HDViewExamResultScreen> {
                               fontSize: 18,
                             ),
                           ),
-                          // (questionResults[getIndexResultById(
-                          //             questionResults, question.id)]
-                          //         .selectedAnswer
-                          //         .isNotEmpty)
-                          //     ? Text(
-                          //         'Selected answer: ${questionResults[getIndexResultById(questionResults, question.id)].selectedAnswer}',
-                          //         style: TextStyle(
-                          //           fontWeight: FontWeight.bold,
-                          //           fontSize: 18,
-                          //         ),
-                          //       )
-                          //     : SizedBox(),
+                          (questionResults[getIndexResultById(
+                                          questionResults, question.id)]
+                                      .selectedAnswer !=
+                                  " ")
+                              ? (questionResults[getIndexResultById(
+                                              questionResults, question.id)]
+                                          .selectedAnswer ==
+                                      question.correctAnswer)
+                                  ? Text(
+                                      'Selected answer: ${questionResults[getIndexResultById(questionResults, question.id)].selectedAnswer}',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: Colors.green,
+                                      ),
+                                    )
+                                  : Text(
+                                      'Selected answer: ${questionResults[getIndexResultById(questionResults, question.id)].selectedAnswer}',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: Colors.red,
+                                      ),
+                                    )
+                              : Text(
+                                  'Selected answer: not chosen',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: Colors.red,
+                                  ),
+                                ),
                           (questionResults[getIndexResultById(
                                           questionResults, question.id)]
                                       .selectedAnswer ==
@@ -235,6 +255,7 @@ class _HDViewExamResultScreenState extends State<HDViewExamResultScreen> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,
+                                    color: Colors.green,
                                   ),
                                 )
                               : Text(
@@ -242,6 +263,7 @@ class _HDViewExamResultScreenState extends State<HDViewExamResultScreen> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,
+                                    color: Colors.red,
                                   ),
                                 ),
                         ],
