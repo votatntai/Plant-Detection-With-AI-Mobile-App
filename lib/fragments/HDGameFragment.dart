@@ -167,7 +167,7 @@ class _HDGameFragmentState extends State<HDGameFragment> {
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                          MainAxisAlignment.start,
                                       children: [
                                         Padding(
                                           padding:
@@ -178,6 +178,7 @@ class _HDGameFragmentState extends State<HDGameFragment> {
                                             margin: EdgeInsets.symmetric(
                                                 horizontal: 5.0),
                                             child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   'Examination',
@@ -192,11 +193,11 @@ class _HDGameFragmentState extends State<HDGameFragment> {
                                                     : Text(
                                                         'Submit at: Chưa có thông tin'),
                                                 10.height,
-                                                (exam['score'] > 4.0)
+                                                (exam['score']!= null && exam['score'] > 4.0)
                                                     ? Row(
                                                   children: [
                                                     20.width,
-                                                    Text('Score: ${exam['score']}', style: TextStyle(fontSize: 16),),
+                                                    Text('Score: ${exam['score'] ?? 0.0}', style: TextStyle(fontSize: 16),),
                                                     20.width,
                                                     Container(
                                                       decoration:
@@ -215,10 +216,10 @@ class _HDGameFragmentState extends State<HDGameFragment> {
                                                     ),
                                                   ],
                                                 )
-                                                    : Row(
+                                                    : (exam['score']!= null && exam['score'] < 4.0) ?  Row(
                                                   children: [
                                                     20.width,
-                                                    Text('Score: ${exam['score']}', style: TextStyle(fontSize: 16),),
+                                                    Text('Score: ${exam['score'] ?? 0.0}', style: TextStyle(fontSize: 16),),
                                                     20.width,
                                                     Container(
                                                       decoration:
@@ -239,7 +240,7 @@ class _HDGameFragmentState extends State<HDGameFragment> {
                                                       ),
                                                     ),
                                                   ],
-                                                ),
+                                                ) : SizedBox(),
                                               ],
                                             ),
                                           ),
