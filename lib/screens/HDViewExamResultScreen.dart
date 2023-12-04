@@ -98,7 +98,7 @@ class _HDViewExamResultScreenState extends State<HDViewExamResultScreen> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios, color: miaPrimaryColor),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context, true);
             },
           ).paddingSymmetric(horizontal: 8),
           title: Padding(
@@ -122,7 +122,7 @@ class _HDViewExamResultScreenState extends State<HDViewExamResultScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
-                    'Score: $score/10',
+                    'Score: $score/10.0',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),

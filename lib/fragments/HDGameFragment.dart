@@ -107,12 +107,26 @@ class _HDGameFragmentState extends State<HDGameFragment> {
                               child: Container(
                                 width: double.infinity,
                                 child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
+                                  onPressed: () async {
+                                    final reLoad = await Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => HDExamScreen()),
                                     );
+                                    print('Reload value: $reLoad');
+                                    if (reLoad == true) {
+                                      setState(() {
+                                        isLoading = false;
+                                        isLoadingMoreData = false;
+                                        hasFetchedData = false;
+                                        _atBottom = false;
+                                        isLastPage = false;
+                                        totalRow = 0;
+                                        pageNum = 0;
+                                        data = [];
+                                        lastFetchTime = null;
+                                      });
+                                    }
                                   },
                                   style: ButtonStyle(
                                     minimumSize:
@@ -152,7 +166,7 @@ class _HDGameFragmentState extends State<HDGameFragment> {
                             ),
                           ]).paddingSymmetric(horizontal: 16),
                       (data.isEmpty)
-                          ? Text('Reports empty')
+                          ? Text('Exam empty')
                           : Column(
                               children: data.map((exam) {
                                 return Padding(
@@ -196,7 +210,6 @@ class _HDGameFragmentState extends State<HDGameFragment> {
                                                 (exam['score']!= null && exam['score'] > 4.0)
                                                     ? Row(
                                                   children: [
-                                                    20.width,
                                                     Text('Score: ${exam['score'] ?? 0.0}', style: TextStyle(fontSize: 16),),
                                                     20.width,
                                                     Container(
@@ -207,10 +220,13 @@ class _HDGameFragmentState extends State<HDGameFragment> {
                                                         BorderRadius
                                                             .circular(12),
                                                       ),
-                                                      child: Text(
-                                                        'Passed',
-                                                        style: TextStyle(
-                                                          fontSize: 16,
+                                                      child: Padding(
+                                                        padding: EdgeInsets.all(6),
+                                                        child: Text(
+                                                          'Passed',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
@@ -218,7 +234,6 @@ class _HDGameFragmentState extends State<HDGameFragment> {
                                                 )
                                                     : (exam['score']!= null && exam['score'] < 4.0) ?  Row(
                                                   children: [
-                                                    20.width,
                                                     Text('Score: ${exam['score'] ?? 0.0}', style: TextStyle(fontSize: 16),),
                                                     20.width,
                                                     Container(
@@ -227,7 +242,7 @@ class _HDGameFragmentState extends State<HDGameFragment> {
                                                         color: Colors.red,
                                                         borderRadius:
                                                         BorderRadius
-                                                            .circular(18),
+                                                            .circular(12),
                                                       ),
                                                       child: Padding(
                                                         padding: EdgeInsets.all(6),
@@ -342,7 +357,6 @@ class _HDGameFragmentState extends State<HDGameFragment> {
           if (pageNum >= totalRow / 10 - 1) isLastPage = true;
           final List<Map<String, dynamic>> body =
               jsonResponse['data'].cast<Map<String, dynamic>>();
-          print(body);
           data = body;
           isLoading = false;
           hasFetchedData = true;
@@ -391,15 +405,12 @@ class _HDGameFragmentState extends State<HDGameFragment> {
   }
 }
 
-DateTime? parseDate(String inputDate) {
+String? parseDate(String inputDate) {
   try {
-    // Định dạng chuỗi ngày theo định dạng "dd/MM/yyyy"
-    DateFormat format = DateFormat('dd/MM/yyyy');
-    // Chuyển đổi chuỗi ngày thành đối tượng DateTime
-    DateTime parsedDate = format.parseStrict(inputDate);
-    return parsedDate;
+    DateTime dateTime = DateTime.parse(inputDate);
+    String formattedDate = "${dateTime.day}/${dateTime.month}/${dateTime.year}";
+    return formattedDate;
   } catch (e) {
-    // Xử lý nếu có lỗi định dạng
     return null;
   }
 }

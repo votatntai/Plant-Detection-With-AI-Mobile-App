@@ -46,8 +46,8 @@ class _HDExamScreenState extends State<HDExamScreen> {
   }
 
   void _onSubmit() async {
+    showLoadingDialog(context);
     List<Map<String, String>> requestBody = [];
-
     for (int i = 0; i < questions.length; i++) {
       String questionId = questions[i].id;
       String selectedAnswer = selectedAnswers[i];
@@ -66,24 +66,28 @@ class _HDExamScreenState extends State<HDExamScreen> {
           body: jsonEncode({'questionExams': requestBody}),
         );
         if (response.statusCode == 200) {
-          Navigator.pushReplacement(
+          hideLoadingDialog(context);
+          Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => HDViewExamResultScreen(
                 examId: examId,
               ),
             ),
-          );
+          ).then((value) => {
+                if (value == true) {Navigator.pop(context, true)}
+              });
           _showSubmitSuccessDialog(context);
         } else {
+          hideLoadingDialog(context);
           print('API request failed with status code: ${response.statusCode}');
         }
       } else {
-        // Xử lý lỗi từ server nếu cần
+        hideLoadingDialog(context);
         print('exam id ko lay dc');
       }
     } catch (e) {
-      // Xử lý lỗi kết nối hoặc xử lý ngoại lệ khác
+      hideLoadingDialog(context);
       print('Error during API request: $e');
     }
   }
@@ -227,19 +231,33 @@ class _HDExamScreenState extends State<HDExamScreen> {
                                 onTap: () {
                                   setState(() {
                                     // Đảo ngược trạng thái của radio khi nhấn vào dòng
-                                    selectedAnswers[getIndexById(questions, question.id)] =
-                                    (selectedAnswers[getIndexById(questions, question.id)] == 'A')
-                                        ? ""
-                                        : 'A';
+                                    selectedAnswers[getIndexById(
+                                            questions, question.id)] =
+                                        (selectedAnswers[getIndexById(
+                                                    questions, question.id)] ==
+                                                'A')
+                                            ? ""
+                                            : 'A';
                                   });
                                 },
                                 child: Row(
                                   children: [
                                     Radio(
                                       value: 'A',
-                                      groupValue: selectedAnswers[getIndexById(questions, question.id)],
+                                      groupValue: selectedAnswers[
+                                          getIndexById(questions, question.id)],
                                       onChanged: (value) {
-                                        // Không cần phải làm gì cả vì đã xử lý trong GestureDetector
+                                        setState(() {
+                                          // Đảo ngược trạng thái của radio khi nhấn vào dòng
+                                          selectedAnswers[getIndexById(
+                                                  questions, question.id)] =
+                                              (selectedAnswers[getIndexById(
+                                                          questions,
+                                                          question.id)] ==
+                                                      'A')
+                                                  ? ""
+                                                  : 'A';
+                                        });
                                       },
                                     ),
                                     Text(
@@ -257,19 +275,33 @@ class _HDExamScreenState extends State<HDExamScreen> {
                                 onTap: () {
                                   setState(() {
                                     // Đảo ngược trạng thái của radio khi nhấn vào dòng
-                                    selectedAnswers[getIndexById(questions, question.id)] =
-                                    (selectedAnswers[getIndexById(questions, question.id)] == 'B')
-                                        ? ""
-                                        : 'B';
+                                    selectedAnswers[getIndexById(
+                                            questions, question.id)] =
+                                        (selectedAnswers[getIndexById(
+                                                    questions, question.id)] ==
+                                                'B')
+                                            ? ""
+                                            : 'B';
                                   });
                                 },
                                 child: Row(
                                   children: [
                                     Radio(
                                       value: 'B',
-                                      groupValue: selectedAnswers[getIndexById(questions, question.id)],
+                                      groupValue: selectedAnswers[
+                                          getIndexById(questions, question.id)],
                                       onChanged: (value) {
-                                        // Không cần phải làm gì cả vì đã xử lý trong GestureDetector
+                                        setState(() {
+                                          // Đảo ngược trạng thái của radio khi nhấn vào dòng
+                                          selectedAnswers[getIndexById(
+                                                  questions, question.id)] =
+                                              (selectedAnswers[getIndexById(
+                                                          questions,
+                                                          question.id)] ==
+                                                      'B')
+                                                  ? ""
+                                                  : 'B';
+                                        });
                                       },
                                     ),
                                     Text(
@@ -287,19 +319,33 @@ class _HDExamScreenState extends State<HDExamScreen> {
                                 onTap: () {
                                   setState(() {
                                     // Đảo ngược trạng thái của radio khi nhấn vào dòng
-                                    selectedAnswers[getIndexById(questions, question.id)] =
-                                    (selectedAnswers[getIndexById(questions, question.id)] == 'C')
-                                        ? ""
-                                        : 'C';
+                                    selectedAnswers[getIndexById(
+                                            questions, question.id)] =
+                                        (selectedAnswers[getIndexById(
+                                                    questions, question.id)] ==
+                                                'C')
+                                            ? ""
+                                            : 'C';
                                   });
                                 },
                                 child: Row(
                                   children: [
                                     Radio(
                                       value: 'C',
-                                      groupValue: selectedAnswers[getIndexById(questions, question.id)],
+                                      groupValue: selectedAnswers[
+                                          getIndexById(questions, question.id)],
                                       onChanged: (value) {
-                                        // Không cần phải làm gì cả vì đã xử lý trong GestureDetector
+                                        setState(() {
+                                          // Đảo ngược trạng thái của radio khi nhấn vào dòng
+                                          selectedAnswers[getIndexById(
+                                                  questions, question.id)] =
+                                              (selectedAnswers[getIndexById(
+                                                          questions,
+                                                          question.id)] ==
+                                                      'C')
+                                                  ? ""
+                                                  : 'C';
+                                        });
                                       },
                                     ),
                                     Text(
@@ -317,19 +363,32 @@ class _HDExamScreenState extends State<HDExamScreen> {
                                 onTap: () {
                                   setState(() {
                                     // Đảo ngược trạng thái của radio khi nhấn vào dòng
-                                    selectedAnswers[getIndexById(questions, question.id)] =
-                                    (selectedAnswers[getIndexById(questions, question.id)] == 'D')
-                                        ? ""
-                                        : 'D';
+                                    selectedAnswers[getIndexById(
+                                            questions, question.id)] =
+                                        (selectedAnswers[getIndexById(
+                                                    questions, question.id)] ==
+                                                'D')
+                                            ? ""
+                                            : 'D';
                                   });
                                 },
                                 child: Row(
                                   children: [
                                     Radio(
                                       value: 'D',
-                                      groupValue: selectedAnswers[getIndexById(questions, question.id)],
+                                      groupValue: selectedAnswers[
+                                          getIndexById(questions, question.id)],
                                       onChanged: (value) {
-                                        // Không cần phải làm gì cả vì đã xử lý trong GestureDetector
+                                        setState(() {
+                                          selectedAnswers[getIndexById(
+                                                  questions, question.id)] =
+                                              (selectedAnswers[getIndexById(
+                                                          questions,
+                                                          question.id)] ==
+                                                      'D')
+                                                  ? ""
+                                                  : 'D';
+                                        });
                                       },
                                     ),
                                     Text(
@@ -422,5 +481,31 @@ class _HDExamScreenState extends State<HDExamScreen> {
         );
       },
     );
+  }
+
+  Future<void> showLoadingDialog(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // Không đóng dialog bằng cách tap ra ngoài
+      builder: (BuildContext context) {
+        return Center(
+          child: AlertDialog(
+            content: Row(
+              children: <Widget>[
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                ), // Hiển thị vòng loading
+                SizedBox(width: 20),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+// Hàm để ẩn AlertDialog loading
+  void hideLoadingDialog(BuildContext context) {
+    Navigator.of(context, rootNavigator: true).pop('dialog');
   }
 }
