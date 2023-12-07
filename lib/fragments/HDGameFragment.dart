@@ -192,7 +192,8 @@ class _HDGameFragmentState extends State<HDGameFragment> {
                                             margin: EdgeInsets.symmetric(
                                                 horizontal: 5.0),
                                             child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   'Examination',
@@ -207,55 +208,80 @@ class _HDGameFragmentState extends State<HDGameFragment> {
                                                     : Text(
                                                         'Submit at: Chưa có thông tin'),
                                                 10.height,
-                                                (exam['score']!= null && exam['score'] > 4.0)
+                                                (exam['score'] != null &&
+                                                        exam['score'] > 4.0)
                                                     ? Row(
-                                                  children: [
-                                                    Text('Score: ${exam['score'] ?? 0.0}', style: TextStyle(fontSize: 16),),
-                                                    20.width,
-                                                    Container(
-                                                      decoration:
-                                                      BoxDecoration(
-                                                        color: Colors.green,
-                                                        borderRadius:
-                                                        BorderRadius
-                                                            .circular(12),
-                                                      ),
-                                                      child: Padding(
-                                                        padding: EdgeInsets.all(6),
-                                                        child: Text(
-                                                          'Passed',
-                                                          style: TextStyle(
-                                                            fontSize: 16,
+                                                        children: [
+                                                          Text(
+                                                            'Score: ${exam['score'] ?? 0.0}',
+                                                            style: TextStyle(
+                                                                fontSize: 16),
                                                           ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
-                                                    : (exam['score']!= null && exam['score'] < 4.0) ?  Row(
-                                                  children: [
-                                                    Text('Score: ${exam['score'] ?? 0.0}', style: TextStyle(fontSize: 16),),
-                                                    20.width,
-                                                    Container(
-                                                      decoration:
-                                                      BoxDecoration(
-                                                        color: Colors.red,
-                                                        borderRadius:
-                                                        BorderRadius
-                                                            .circular(12),
-                                                      ),
-                                                      child: Padding(
-                                                        padding: EdgeInsets.all(6),
-                                                        child: Text(
-                                                          'Not pass',
-                                                          style: TextStyle(
-                                                            fontSize: 16,
+                                                          20.width,
+                                                          Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color:
+                                                                  Colors.green,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12),
+                                                            ),
+                                                            child: Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(6),
+                                                              child: Text(
+                                                                'Passed',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 16,
+                                                                ),
+                                                              ),
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ) : SizedBox(),
+                                                        ],
+                                                      )
+                                                    : (exam['score'] != null &&
+                                                            exam['score'] < 4.0)
+                                                        ? Row(
+                                                            children: [
+                                                              Text(
+                                                                'Score: ${exam['score'] ?? 0.0}',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        16),
+                                                              ),
+                                                              20.width,
+                                                              Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              12),
+                                                                ),
+                                                                child: Padding(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              6),
+                                                                  child: Text(
+                                                                    'Not pass',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          16,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          )
+                                                        : SizedBox(),
                                               ],
                                             ),
                                           ),
