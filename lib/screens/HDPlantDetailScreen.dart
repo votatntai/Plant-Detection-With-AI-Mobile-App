@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -197,7 +195,7 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
                       children: [
                         Center(
                           child: Text(
-                            '${plant['name']}' ?? 'name',
+                            plant['name'] ? '${plant['name']}' : 'name',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 24.0),
                           ),
@@ -245,8 +243,7 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
                                             fontSize: 16.0),
                                       ),
                                       Text(
-                                        '${plant['livingCondition']}' ??
-                                            'livingCondition',
+                                        '${plant['livingCondition']}',
                                         style: TextStyle(fontSize: 16.0),
                                         softWrap: true,
                                       )
@@ -286,7 +283,7 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
                                     softWrap: true,
                                   ),
                                   Text(
-                                    '${plant['ph']}' ?? 'ph',
+                                    '${plant['ph']}',
                                     style: TextStyle(fontSize: 16.0),
                                     softWrap: true,
                                   )
@@ -322,8 +319,7 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
                                         softWrap: true,
                                       ),
                                       Text(
-                                        '${plant['distributionArea']}' ??
-                                            'distributionArea',
+                                        '${plant['distributionArea']}',
                                         style: TextStyle(fontSize: 16.0),
                                         softWrap: true,
                                       ),
@@ -366,7 +362,7 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
                                         softWrap: true,
                                       ),
                                       Text(
-                                        '${plant['size']}' ?? 'size',
+                                        '${plant['size']}',
                                         style: TextStyle(fontSize: 16.0),
                                         softWrap: true,
                                       ),
@@ -409,7 +405,7 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
                                         softWrap: true,
                                       ),
                                       Text(
-                                        '${plant['fruitTime']}' ?? 'fruitTime',
+                                        '${plant['fruitTime']}',
                                         style: TextStyle(fontSize: 16.0),
                                         softWrap: true,
                                       ),
@@ -452,8 +448,7 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
                                         softWrap: true,
                                       ),
                                       Text(
-                                        '${plant['scienceName']}' ??
-                                            'scienceName',
+                                        '${plant['scienceName']}',
                                         style: TextStyle(fontSize: 16.0),
                                         softWrap: true,
                                       ),
@@ -496,7 +491,7 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
                                         softWrap: true,
                                       ),
                                       Text(
-                                        '${plant['genus']}' ?? 'fruitTime',
+                                        '${plant['genus']}',
                                         style: TextStyle(fontSize: 16.0),
                                         softWrap: true,
                                       ),
@@ -539,8 +534,7 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
                                         softWrap: true,
                                       ),
                                       Text(
-                                        '${plant['discoverer']}' ??
-                                            'scienceName',
+                                        '${plant['discoverer']}',
                                         style: TextStyle(fontSize: 16.0),
                                         softWrap: true,
                                       ),
@@ -583,7 +577,7 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
                                         softWrap: true,
                                       ),
                                       Text(
-                                        '${plant['species']}' ?? 'scienceName',
+                                        '${plant['species']}',
                                         style: TextStyle(fontSize: 16.0),
                                         softWrap: true,
                                       ),
@@ -626,7 +620,7 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
                                         softWrap: true,
                                       ),
                                       Text(
-                                        '${plant['uses']}' ?? 'uses',
+                                        '${plant['uses']}',
                                         style: TextStyle(
                                           fontSize: 16,
                                         ),
@@ -671,8 +665,7 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
                                         softWrap: true,
                                       ),
                                       Text(
-                                        '${plant['conservationStatus']}' ??
-                                            'conservationStatus',
+                                        '${plant['conservationStatus']}',
                                         style: TextStyle(
                                           fontSize: 16,
                                           // Kích thước chữ
