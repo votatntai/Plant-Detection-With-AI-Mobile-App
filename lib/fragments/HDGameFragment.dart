@@ -113,8 +113,19 @@ class _HDGameFragmentState extends State<HDGameFragment> {
                                       MaterialPageRoute(
                                           builder: (context) => HDExamScreen()),
                                     );
-                                    print('Reload value: $reLoad');
                                     if (reLoad == true) {
+                                      setState(() {
+                                        isLoading = false;
+                                        isLoadingMoreData = false;
+                                        hasFetchedData = false;
+                                        _atBottom = false;
+                                        isLastPage = false;
+                                        totalRow = 0;
+                                        pageNum = 0;
+                                        data = [];
+                                        lastFetchTime = null;
+                                      });
+                                    } else {
                                       setState(() {
                                         isLoading = false;
                                         isLoadingMoreData = false;
@@ -281,7 +292,19 @@ class _HDGameFragmentState extends State<HDGameFragment> {
                                                               ),
                                                             ],
                                                           )
-                                                        : SizedBox(),
+                                                        : Padding(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    6),
+                                                            child: Text(
+                                                              'Exam have not submitted yet!',
+                                                              style: TextStyle(
+                                                                fontSize: 12,
+                                                                color:
+                                                                    Colors.red,
+                                                              ),
+                                                            ),
+                                                          ),
                                               ],
                                             ),
                                           ),
@@ -295,47 +318,52 @@ class _HDGameFragmentState extends State<HDGameFragment> {
                                               Positioned(
                                                 bottom: 0,
                                                 right: 8,
-                                                child: ElevatedButton(
-                                                  onPressed: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            HDViewExamResultScreen(
-                                                          examId: exam['id'],
+                                                child: (!exam['isSubmitted'])
+                                                    ? SizedBox()
+                                                    : ElevatedButton(
+                                                        onPressed: () {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  HDViewExamResultScreen(
+                                                                examId:
+                                                                    exam['id'],
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        style: ButtonStyle(
+                                                          minimumSize:
+                                                              MaterialStateProperty
+                                                                  .resolveWith(
+                                                                      (states) =>
+                                                                          Size(
+                                                                              70,
+                                                                              30)),
+                                                          shape: MaterialStateProperty
+                                                              .all<
+                                                                  RoundedRectangleBorder>(
+                                                            RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          6.0), // Điều chỉnh giá trị theo ý muốn
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        child: Text(
+                                                          'View Result',
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            // Đặt màu cho văn bản
+                                                            fontSize: 12,
+                                                            // Đặt kích thước của văn bản (tuỳ chọn)
+                                                            fontWeight: FontWeight
+                                                                .bold, // Đặt độ đậm của văn bản (tuỳ chọn)
+                                                          ),
                                                         ),
                                                       ),
-                                                    );
-                                                  },
-                                                  style: ButtonStyle(
-                                                    minimumSize:
-                                                        MaterialStateProperty
-                                                            .resolveWith(
-                                                                (states) =>
-                                                                    Size(70,
-                                                                        30)),
-                                                    shape: MaterialStateProperty
-                                                        .all<
-                                                            RoundedRectangleBorder>(
-                                                      RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                6.0), // Điều chỉnh giá trị theo ý muốn
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  child: Text(
-                                                    'View Result',
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      // Đặt màu cho văn bản
-                                                      fontSize: 12,
-                                                      // Đặt kích thước của văn bản (tuỳ chọn)
-                                                      fontWeight: FontWeight
-                                                          .bold, // Đặt độ đậm của văn bản (tuỳ chọn)
-                                                    ),
-                                                  ),
-                                                ),
                                               ),
                                             ],
                                           ),

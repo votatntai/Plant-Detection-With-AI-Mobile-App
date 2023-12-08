@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../utils/MIAColors.dart';
@@ -62,6 +63,7 @@ class _HDViewResultScreenState extends State<HDViewResultScreen> {
   }
 
   Widget _buildPlantInfo(Map<String, dynamic> plant) {
+    final staticAnchorKey = GlobalKey();
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -85,11 +87,15 @@ class _HDViewResultScreenState extends State<HDViewResultScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   // Điều chỉnh giá trị theo ý muốn
-                  child: Image.network(
-                    plant['images'][_currentImageIndex]['url'] ??
-                        'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png',
-                    fit: BoxFit.cover,
-                  ),
+                  child: plant['images'] != null && plant['images'].isNotEmpty
+                      ? Image.network(
+                          plant['images'][_currentImageIndex]['url'],
+                          fit: BoxFit.cover,
+                        )
+                      : Image.network(
+                          'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png',
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
             ),
@@ -663,15 +669,22 @@ class _HDViewResultScreenState extends State<HDViewResultScreen> {
                             ],
                           ),
                     10.height,
-                    Text(
-                      '${plant['description']}' ?? 'Description',
-                      style: TextStyle(
-                        color: Colors.black.withOpacity(0.5),
-                        // Độ mờ màu chữ
-                        fontSize: 16,
-                        // Kích thước chữ
-                        fontWeight: FontWeight.normal, // Trọng lượng chữ
-                      ),
+                    Html(
+                      anchorKey: staticAnchorKey,
+                      data: plant['description'],
+                      style: {
+                        "p": Style(
+                          color: Colors.black.withOpacity(0.5),
+                          fontSize: FontSize(16),
+                          // Kích thước chữ
+                        ),
+                        "span": Style(
+                          backgroundColor: Colors.transparent,
+                          color: Colors.black.withOpacity(0.5),
+                          fontSize: FontSize(16),
+                          // Kích thước chữ
+                        ),
+                      },
                     ),
                   ],
                 ),

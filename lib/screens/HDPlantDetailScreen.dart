@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:http/http.dart' as http;
 import '../providers/APIUrl.dart';
@@ -69,6 +70,7 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final staticAnchorKey = GlobalKey();
     if (!hasFetchedData)
       return Center(
         child: CircularProgressIndicator(
@@ -122,8 +124,7 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
                       child:
                           plant['images'] != null && plant['images'].isNotEmpty
                               ? Image.network(
-                                  plant['images'][0]['url'] ??
-                                      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png',
+                                  plant['images'][_currentImageIndex]['url'],
                                   fit: BoxFit.cover,
                                 )
                               : Image.network(
@@ -705,15 +706,32 @@ class _HDPlantDetailScreenState extends State<HDPlantDetailScreen> {
                                 ],
                               ),
                         10.height,
-                        Text(
-                          '${plant['description']}' ?? 'Description',
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.5),
-                            // Độ mờ màu chữ
-                            fontSize: 16,
-                            // Kích thước chữ
-                            fontWeight: FontWeight.normal, // Trọng lượng chữ
-                          ),
+                        // Text(
+                        //   '${plant['description']}' ?? 'Description',
+                        //   style: TextStyle(
+                        //     color: Colors.black.withOpacity(0.5),
+                        //     // Độ mờ màu chữ
+                        //     fontSize: 16,
+                        //     // Kích thước chữ
+                        //     fontWeight: FontWeight.normal, // Trọng lượng chữ
+                        //   ),
+                        // ),
+                        Html(
+                          anchorKey: staticAnchorKey,
+                          data: plant['description'],
+                          style: {
+                            "p": Style(
+                              color: Colors.black.withOpacity(0.5),
+                              fontSize: FontSize(16),
+                              // Kích thước chữ
+                            ),
+                            "span": Style(
+                              backgroundColor: Colors.transparent,
+                              color: Colors.black.withOpacity(0.5),
+                              fontSize: FontSize(16),
+                              // Kích thước chữ
+                            ),
+                          },
                         ),
                       ],
                     ),
