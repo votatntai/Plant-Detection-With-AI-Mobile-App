@@ -159,13 +159,21 @@ class _HDViewResultInClassScreenState extends State<HDViewResultInClassScreen> {
                   // Căn lề bên trái
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Center(
-                      child: Text(
-                        plant['name'] ? '${plant['name']}' : 'name',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 24.0),
-                      ),
-                    ),
+                    (plant['name'] != null && plant['name'] != '')
+                        ? Center(
+                            child: Text(
+                              '${plant['name']}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 24.0),
+                            ),
+                          )
+                        : Center(
+                            child: Text(
+                              'name',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 24.0),
+                            ),
+                          ),
                     10.height,
                     (plant['plantCategories'] != null)
                         ? Wrap(
