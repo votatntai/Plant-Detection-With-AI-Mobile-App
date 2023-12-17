@@ -357,6 +357,6 @@ DateTime? parseDate(String inputDate) {
 }
 bool isValidPhoneNumber(String phoneNumber) {
   // Sử dụng biểu thức chính quy để kiểm tra xem chuỗi có 10 chữ số không
-  RegExp regExp = RegExp(r'^[0-9]{10}$');
+  RegExp regExp = RegExp(r'^0(3[2-9]|5[6-8]|7[0-9]|8[1-6]|9[0-8])\d{7}$');
   return regExp.hasMatch(phoneNumber);
 }
