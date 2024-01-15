@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class APIUrl extends ChangeNotifier {
 
-  static const baseURL = 'https://1c02-115-74-36-211.ngrok-free.app';
+  static const baseURL = 'https://94ce-115-74-31-194.ngrok-free.app';
 
   static getUrl() {
     return baseURL;
